@@ -4,6 +4,9 @@ services:
     build: ./infra/php
     volumes:
       - ./src:/data
+    working_dir: /data
+    command: >
+      sh -c "npm install && npm run build && php-fpm"
   web:
     image: nginx:1.20-alpine
     ports:
