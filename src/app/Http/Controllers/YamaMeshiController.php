@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\YamaMeshiPost;
 
 class YamaMeshiController extends Controller
 {
     public function index()
     {
-        return view('yama-meshi.index'); // 投稿一覧ページ
+        // return view('yama-meshi.index'); // 投稿一覧ページ
+        $posts = YamaMeshiPost::orderBy('created_at', 'desc')->get(); // 投稿を取得
+        return view('yama-meshi.index', compact('posts')); // ビューに渡す
     }
 
     public function create()

@@ -22,7 +22,7 @@
         <!-- 右上：認証ボタン -->
         <div class="flex space-x-4">
             @auth
-                <a href="{{ route('yama-meshi.index') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg">
+                <a href="{{ route('mypage') }}" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg">
                     マイページ
                 </a>
                 <form method="POST" action="{{ route('logout') }}">
@@ -46,14 +46,26 @@
     <main class="flex flex-col items-center justify-center min-h-screen pt-20">
         <!-- タイトル -->
         <h1 class="text-6xl font-bold text-white drop-shadow-lg">ヤマメシ</h1>
-        <p class="text-lg text-white mt-2">登山の楽しみをシェアしよう！</p>
+        <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
 
         <!-- 投稿一覧 -->
         <div class="w-full max-w-4xl bg-white bg-opacity-90 shadow-lg rounded-lg mt-8 p-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">投稿一覧</h2>
             <div id="post-list">
-                <!-- 投稿データは後ほど追加 -->
-                <p class="text-gray-600">投稿はまだありません。</p>
+                @if($posts->isEmpty())
+                    <p class="text-gray-600">投稿はまだありません。</p>
+                @else
+                    @foreach($posts as $post)
+                        <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+                            <h3 class="text-xl font-bold text-gray-800">{{ $post->title }}</h3>
+                            <p class="text-gray-700">{{ $post->content }}</p>
+                            @if($post->image_path)
+                                <img src="{{ asset('storage/' . $post->image_path) }}" class="mt-2 w-full max-w-xs">
+                            @endif
+                            <p class="text-sm text-gray-500">投稿日: {{ $post->created_at->format('Y-m-d H:i') }}</p>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </main>
