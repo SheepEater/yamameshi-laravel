@@ -10,8 +10,13 @@ class YamaMeshiController extends Controller
 {
     public function index()
     {
-        // return view('yama-meshi.index'); // 投稿一覧ページ
-        $posts = YamaMeshiPost::orderBy('created_at', 'desc')->get(); // 投稿を取得
+        // 投稿データを取得（ユーザー情報・いいね情報）
+        $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
+            ->withCount('likes')
+            ->orderBy('created_at', 'desc')
+            ->latest()
+            ->get(); // 投稿を取得
+        
         return view('yama-meshi.index', compact('posts')); // ビューに渡す
     }
 
@@ -25,25 +30,33 @@ class YamaMeshiController extends Controller
         // 1️⃣ バリデーション
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像のアップロード
+            'content' => 'nullable|string',
+            'place' => 'nullable|string|max:255',
+            'food' => 'nullable|string|max:255',
+            'date' => 'nullable|date',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 複数画像対応
+        ]);
+
+        $imagePaths = [];
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('uploads', 'public');
+                $imagePaths[] = $path;
+            }
+        }
+
+        YamaMeshiPost::create([
+            'title' => $validated['title'],
+            'content' => $validated['content'] ?? null,
+            'place' => $validated['place'] ?? null,
+            'food' => $validated['food'] ?? null,
+            'date' => $validated['date'] ?? null,
+            'image_paths' => json_encode($imagePaths),
+            'user_id' => auth()->id(),
         ]);
     
-        // 2️⃣ 投稿データを保存
-        $post = new YamaMeshiPost();
-        $post->title = $validated['title'];
-        $post->content = $validated['content'];
-    
-        // 画像がアップロードされた場合、保存する
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('images', 'public');
-            $post->image_path = $path;
-        }
-    
-        $post->user_id = auth()->id(); // 認証ユーザーのIDをセット
-        $post->save();
-    
-        // 3️⃣ 投稿完了メッセージとリダイレクト
-        return redirect()->route('yama-meshi.index')->with('success', '投稿が完了しました！');
+        // 投稿完了メッセージとリダイレクト
+        return redirect()->route('home')->with('success', '投稿が完了しました！');
     }    
 }

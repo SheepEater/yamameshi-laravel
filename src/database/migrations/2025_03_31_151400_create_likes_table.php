@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('gender')->nullable();
-            $table->integer('age')->nullable(); 
-            $table->rememberToken();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('yama_meshi_post_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['user_id', 'yama_meshi_post_id']); // 一意制約（1投稿1いいね）
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('likes');
     }
 };

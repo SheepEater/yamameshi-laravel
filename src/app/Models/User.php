@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'gender',
+        'age',
     ];
 
     /**
@@ -41,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function yamaMeshiPosts()
+    {
+        return $this->hasMany(\App\Models\YamaMeshiPost::class);
+    }
 }
