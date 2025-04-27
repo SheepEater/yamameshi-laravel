@@ -34,16 +34,29 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'birth_year' => ['nullable', 'integer', 'between:1900,' . now()->year],
+            'birth_month' => ['nullable', 'integer', 'between:1,12'],
+            'birth_day' => ['nullable', 'integer', 'between:1,31'],
             'gender' => ['nullable', 'in:male,female,other'],
-            'age' => ['nullable', 'integer', 'min:0'],
         ]);
+
+        // 生年月日組み立て
+        $birthDate = null;
+        if ($request->filled(['birth_year', 'birth_month', 'birth_day'])) {
+            $birthDate = \Carbon\Carbon::createFromDate(
+                $request->birth_year,
+                $request->birth_month,
+                $request->birth_day
+            );
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'gender' => $request->gender ?? null,
-            'age' => $request->age ?? null,
+            'birth_date' => $birthDate,
+            'age' => $birthDate ? $birthDate->age : null,
         ]);
 
         event(new Registered($user));

@@ -16,7 +16,7 @@
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div class="h-screen bg-gray-100 bg-cover bg-center" style="background-image: url('images/yamaimage.png'); background-size: cover; background-position: center;">
             <!-- →半角にしている＠include('layouts.navigation') -->
 
             <!-- Page Heading -->

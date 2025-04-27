@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,9 @@ class User extends Authenticatable
         'email',
         'password',
         'gender',
-        'age',
+        // 'age',
+        'birth_date',
+        'icon_path',
     ];
 
     /**
@@ -42,6 +45,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'birth_date' => 'date',
     ];
 
     public function likes()
@@ -53,4 +57,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\YamaMeshiPost::class);
     }
+
+    public function getAgeAttribute()
+    {
+        return $this->birth_date ? \Carbon\Carbon::parse($this->birth_date)->age : null;
+    }
+    // public function setBirthDateAttribute($value)
+    // {
+    //     $this->attributes['birth_date'] = $value;
+    //     $this->attributes['age'] = \Carbon\Carbon::parse($value)->age;
+    // }
+
 }

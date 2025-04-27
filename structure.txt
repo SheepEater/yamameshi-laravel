@@ -1,0 +1,210 @@
+.
+├── README.md
+├── app
+│   └── Actions
+│       └── Fortify
+├── docker-compose.yml
+├── infra
+│   ├── mysql
+│   │   ├── Dockerfile
+│   │   └── my.cnf
+│   ├── nginx
+│   │   └── default.conf
+│   └── php
+│       ├── Dockerfile
+│       └── php.ini
+├── src
+│   ├── README.md
+│   ├── app
+│   │   ├── Console
+│   │   │   └── Kernel.php
+│   │   ├── Exceptions
+│   │   │   └── Handler.php
+│   │   ├── Http
+│   │   │   ├── Controllers
+│   │   │   │   ├── Auth
+│   │   │   │   │   ├── AuthenticatedSessionController.php
+│   │   │   │   │   ├── ConfirmablePasswordController.php
+│   │   │   │   │   ├── EmailVerificationNotificationController.php
+│   │   │   │   │   ├── EmailVerificationPromptController.php
+│   │   │   │   │   ├── NewPasswordController.php
+│   │   │   │   │   ├── PasswordController.php
+│   │   │   │   │   ├── PasswordResetLinkController.php
+│   │   │   │   │   ├── RegisteredUserController.php
+│   │   │   │   │   └── VerifyEmailController.php
+│   │   │   │   ├── Controller.php
+│   │   │   │   ├── LikeController.php
+│   │   │   │   ├── MessageController.php
+│   │   │   │   ├── ProfileController.php
+│   │   │   │   ├── UserController.php
+│   │   │   │   └── YamaMeshiController.php
+│   │   │   ├── Kernel.php
+│   │   │   ├── Middleware
+│   │   │   │   ├── Authenticate.php
+│   │   │   │   ├── EncryptCookies.php
+│   │   │   │   ├── PreventRequestsDuringMaintenance.php
+│   │   │   │   ├── RedirectIfAuthenticated.php
+│   │   │   │   ├── TrimStrings.php
+│   │   │   │   ├── TrustHosts.php
+│   │   │   │   ├── TrustProxies.php
+│   │   │   │   ├── ValidateSignature.php
+│   │   │   │   └── VerifyCsrfToken.php
+│   │   │   └── Requests
+│   │   │       ├── Auth
+│   │   │       │   └── LoginRequest.php
+│   │   │       └── ProfileUpdateRequest.php
+│   │   ├── Models
+│   │   │   ├── Like.php
+│   │   │   ├── Message.php
+│   │   │   ├── User.php
+│   │   │   └── YamaMeshiPost.php
+│   │   ├── Providers
+│   │   │   ├── AppServiceProvider.php
+│   │   │   ├── AuthServiceProvider.php
+│   │   │   ├── BroadcastServiceProvider.php
+│   │   │   ├── EventServiceProvider.php
+│   │   │   └── RouteServiceProvider.php
+│   │   └── View
+│   │       └── Components
+│   │           ├── AppLayout.php
+│   │           └── GuestLayout.php
+│   ├── artisan
+│   ├── bootstrap
+│   │   ├── app.php
+│   │   └── cache
+│   │       ├── packages.php
+│   │       └── services.php
+│   ├── composer.json
+│   ├── composer.lock
+│   ├── config
+│   │   ├── app.php
+│   │   ├── auth.php
+│   │   ├── broadcasting.php
+│   │   ├── cache.php
+│   │   ├── cors.php
+│   │   ├── database.php
+│   │   ├── filesystems.php
+│   │   ├── hashing.php
+│   │   ├── logging.php
+│   │   ├── mail.php
+│   │   ├── queue.php
+│   │   ├── sanctum.php
+│   │   ├── services.php
+│   │   ├── session.php
+│   │   └── view.php
+│   ├── database
+│   │   ├── factories
+│   │   │   └── UserFactory.php
+│   │   ├── migrations
+│   │   │   ├── 2014_10_12_000000_create_users_table.php
+│   │   │   ├── 2014_10_12_100000_create_password_resets_table.php
+│   │   │   ├── 2019_08_19_000000_create_failed_jobs_table.php
+│   │   │   ├── 2019_12_14_000001_create_personal_access_tokens_table.php
+│   │   │   ├── 2025_03_03_153740_create_yama_meshi_posts_table.php
+│   │   │   ├── 2025_03_29_025754_add_fields_to_yama_meshi_posts_table.php
+│   │   │   ├── 2025_03_31_151400_create_likes_table.php
+│   │   │   ├── 2025_04_08_012839_create_messages_table.php
+│   │   │   ├── 2025_04_08_100517_make_content_nullable_in_yama_meshi_posts_table.php
+│   │   │   └── 2025_04_24_063358_add_profile_fields_to_users_table.php
+│   │   └── seeders
+│   │       └── DatabaseSeeder.php
+│   ├── lang
+│   │   └── en
+│   │       ├── auth.php
+│   │       ├── pagination.php
+│   │       ├── passwords.php
+│   │       └── validation.php
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── phpunit.xml
+│   ├── postcss.config.js
+│   ├── public
+│   │   ├── build
+│   │   │   ├── assets
+│   │   │   │   ├── app-062182cb.js
+│   │   │   │   └── app-66515787.css
+│   │   │   └── manifest.json
+│   │   ├── favicon.ico
+│   │   ├── images
+│   │   │   ├── default-icon.png
+│   │   │   ├── yama-meshi-logo-small.png
+│   │   │   ├── yama-meshi-logo.png
+│   │   │   └── yamaimage.png
+│   │   ├── index.php
+│   │   └── robots.txt
+│   ├── resources
+│   │   ├── css
+│   │   │   └── app.css
+│   │   ├── js
+│   │   │   ├── app.js
+│   │   │   └── bootstrap.js
+│   │   └── views
+│   │       ├── auth
+│   │       │   ├── confirm-password.blade.php
+│   │       │   ├── forgot-password.blade.php
+│   │       │   ├── login.blade.php
+│   │       │   ├── register.blade.php
+│   │       │   ├── reset-password.blade.php
+│   │       │   └── verify-email.blade.php
+│   │       ├── components
+│   │       │   ├── application-logo.blade.php
+│   │       │   ├── auth-session-status.blade.php
+│   │       │   ├── danger-button.blade.php
+│   │       │   ├── dropdown-link.blade.php
+│   │       │   ├── dropdown.blade.php
+│   │       │   ├── header.blade.php
+│   │       │   ├── input-error.blade.php
+│   │       │   ├── input-label.blade.php
+│   │       │   ├── message-modal.blade.php
+│   │       │   ├── modal.blade.php
+│   │       │   ├── nav-link.blade.php
+│   │       │   ├── post-card.blade.php
+│   │       │   ├── primary-button.blade.php
+│   │       │   ├── responsive-nav-link.blade.php
+│   │       │   ├── secondary-button.blade.php
+│   │       │   └── text-input.blade.php
+│   │       ├── dashboard.blade.php
+│   │       ├── index.blade.php
+│   │       ├── layouts
+│   │       │   ├── app.blade.php
+│   │       │   ├── guest.blade.php
+│   │       │   └── navigation.blade.php
+│   │       ├── messages
+│   │       │   └── create.blade.php
+│   │       ├── mypage.blade.php
+│   │       ├── profile
+│   │       │   ├── edit.blade.php
+│   │       │   └── partials
+│   │       │       ├── delete-user-form.blade.php
+│   │       │       ├── update-password-form.blade.php
+│   │       │       └── update-profile-information-form.blade.php
+│   │       ├── welcome.blade.php
+│   │       └── yama-meshi
+│   │           ├── create.blade.php
+│   │           └── index.blade.php
+│   ├── routes
+│   │   ├── api.php
+│   │   ├── auth.php
+│   │   ├── channels.php
+│   │   ├── console.php
+│   │   └── web.php
+│   ├── tailwind.config.js
+│   ├── tests
+│   │   ├── CreatesApplication.php
+│   │   ├── Feature
+│   │   │   ├── Auth
+│   │   │   │   ├── AuthenticationTest.php
+│   │   │   │   ├── EmailVerificationTest.php
+│   │   │   │   ├── PasswordConfirmationTest.php
+│   │   │   │   ├── PasswordResetTest.php
+│   │   │   │   ├── PasswordUpdateTest.php
+│   │   │   │   └── RegistrationTest.php
+│   │   │   ├── ExampleTest.php
+│   │   │   └── ProfileTest.php
+│   │   ├── TestCase.php
+│   │   └── Unit
+│   │       └── ExampleTest.php
+│   └── vite.config.js
+└── structure.txt
+
+51 directories, 157 files

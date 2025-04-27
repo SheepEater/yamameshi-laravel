@@ -21,9 +21,14 @@ use App\Models\YamaMeshiPost;
 */
 
 Route::get('/', function () {
-    $posts = YamaMeshiPost::with(['user', 'likes', 'messages'])->withCount('likes')->latest()->get();
+    $posts = YamaMeshiPost::with(['user', 'likes', 'messages'])->withCount('likes')->latest()->paginate(10);
     return view('index', compact('posts')); // `index.blade.php` に `$posts` を渡す
 })->name('home');
+
+
+Route::get('/about', function () {
+    return view('about'); // about.blade.php ビューを返す
+})->name('about'); // 任意の名前をつけておく（ここでは 'about'）
 
 // 認証が必要なルート
 Route::middleware(['auth'])->group(function () {

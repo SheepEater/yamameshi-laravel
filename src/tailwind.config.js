@@ -8,6 +8,16 @@ module.exports = {
         './resources/views/**/*.blade.php',
     ],
 
+    safelist: [
+        'bg-orange-500',
+        'bg-orange-600',
+        'bg-orange-700',
+        'hover:bg-orange-500',
+        'hover:bg-orange-600',
+        'hover:bg-orange-700',
+        'text-white'
+    ],
+
     theme: {
         extend: {
             fontFamily: {

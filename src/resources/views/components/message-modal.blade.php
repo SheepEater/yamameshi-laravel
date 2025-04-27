@@ -7,13 +7,15 @@
         💬 メッセージを送る
     </button>
 
-    <!-- モーダル本体 -->
+    <!-- モーダル -->
     <div
         x-show="open"
         x-transition
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
     >
-        <div @click.away="open = false" class="bg-white w-full max-w-md p-6 rounded shadow-lg relative">
+        <div @click.away="open = false"
+             class="bg-white w-full max-w-md p-6 rounded shadow-lg relative"
+             x-cloak>
             <!-- 閉じる -->
             <button @click="open = false"
                 class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">&times;</button>
@@ -25,10 +27,19 @@
                 <input type="hidden" name="to_user_id" value="{{ $post->user->id }}">
                 <input type="hidden" name="post_id" value="{{ $post->id }}">
 
-                <textarea name="message" rows="4" class="w-full border p-2 rounded" placeholder="メッセージを入力..."></textarea>
+                <textarea name="message"
+                          rows="4"
+                          required
+                          class="w-full border p-2 rounded"
+                          placeholder="メッセージを入力...">{{ old('message') }}</textarea>
+
+                @error('message')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
 
                 <div class="mt-4 text-right">
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+                    <button type="submit"
+                        class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
                         送信
                     </button>
                 </div>

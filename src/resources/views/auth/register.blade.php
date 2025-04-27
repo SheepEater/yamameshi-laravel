@@ -62,12 +62,9 @@
             <x-input-error :messages="$errors->get('gender')" class="mt-2" />
         </div>
 
-        <!-- 年齢（任意） -->
+        <!-- 生年月日 -->
         <div class="mt-4">
-            <x-input-label for="age" :value="'年齢（任意）'" />
-            <x-text-input id="age" class="block mt-1 w-full" type="number" name="age"
-                :value="old('age')" min="0" />
-            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+            <x-forms.birth-date />
         </div>
 
         <!-- ボタンエリア -->

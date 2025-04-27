@@ -3,13 +3,13 @@
 <div class="bg-white shadow-md rounded-lg p-4 mb-6 space-y-3">
     <!-- ユーザー情報 -->
     <div class="flex items-center space-x-4">
-        <img src="{{ asset('images/default-icon.png') }}" class="w-10 h-10 rounded-full" alt="ユーザーアイコン">
+    <img src="{{ $post->user->icon_path ? asset('storage/' . $post->user->icon_path) : asset('images/default-icon.png') }}" class="w-9 h-9 object-cover rounded-full" alt="ユーザーアイコン">
         <div>
             <p class="font-semibold text-gray-800">{{ $post->user->name }}</p>
-            @if($post->user->gender || $post->user->age)
+            @if($post->user->gender || !is_null($post->user->age))
                 <p class="text-sm text-gray-600">
                     @if($post->user->gender) 性別: {{ $post->user->gender }} @endif
-                    @if($post->user->age) / 年齢: {{ $post->user->age }}歳 @endif
+                    @if(!is_null($post->user->age)) / 年齢: {{ $post->user->age }}歳 @endif
                 </p>
             @endif
         </div>
@@ -24,7 +24,9 @@
     @if($post->image_paths)
         <div class="flex flex-wrap gap-2 mt-2">
             @foreach(json_decode($post->image_paths, true) as $img)
-                <img src="{{ asset('storage/' . $img) }}" class="w-40 h-40 object-cover rounded-md">
+            <div class="w-40 h-40 overflow-hidden rounded-md bg-gray-100">
+                <img src="{{ asset('storage/' . $img) }}" class="w-full h-full object-cover">
+            </div>
             @endforeach
         </div>
     @endif
@@ -52,5 +54,20 @@
                 <x-message-modal :post="$post" />
             @endif
         @endauth
+    </div>
+    <!-- メッセージ一覧 -->
+    @if($post->messages && $post->messages->isNotEmpty())
+        <div class="mt-4 bg-gray-50 p-3 rounded border border-gray-200">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">この投稿へのメッセージ</h4>
+            <ul class="space-y-2">
+                @foreach($post->messages as $msg)
+                    <li class="text-sm text-gray-800">
+                        <span class="font-bold">{{ $msg->sender->name }}</span>：
+                        {{ $msg->content }}
+                        <span class="text-xs text-gray-500 ml-2">{{ $msg->created_at->format('Y/m/d H:i') }}</span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
+    @endif
 </div>
