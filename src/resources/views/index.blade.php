@@ -6,8 +6,9 @@
     <title>ヤマメシ - 登山×料理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css'])
 </head>
-<body class="bg-gray-100 min-h-screen bg-cover bg-center" style="background-image: url('images/yamaimage.png');">
+<body class="min-h-screen bg-cover bg-center">
 
     <!-- ヘッダー -->
     <x-header />
@@ -20,7 +21,7 @@
             </div>
         @endif
         <!-- タイトル -->
-        <h1 class="text-6xl font-bold text-white drop-shadow-lg">ヤマメシ</h1>
+        <h1 class="page-title">ヤマメシ</h1>
         <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
 
         <!-- 投稿一覧 -->

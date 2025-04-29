@@ -30,6 +30,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // フォームから送られたデータをバリデーション
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
@@ -40,7 +41,7 @@ class RegisteredUserController extends Controller
             'gender' => ['nullable', 'in:male,female,other'],
         ]);
 
-        // 生年月日組み立て
+        // 年・月・日から、生年月日（birth_date）組み立て
         $birthDate = null;
         if ($request->filled(['birth_year', 'birth_month', 'birth_day'])) {
             $birthDate = \Carbon\Carbon::createFromDate(
@@ -50,6 +51,7 @@ class RegisteredUserController extends Controller
             );
         }
 
+        // 新しいユーザーをデータベースに作成する
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -59,8 +61,10 @@ class RegisteredUserController extends Controller
             'age' => $birthDate ? $birthDate->age : null,
         ]);
 
+        // ここに処理追加で、認証メール送ったり、ログ記録、通知送付、などできる　後にやろうかな
         event(new Registered($user));
 
+        // ログイン状態にする
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);

@@ -3,3 +3,7 @@
 @tailwind utilities;
 
 [x-cloak] { display: none !important; }
+
+body {
+    background-color: #E7CEB8;
+}

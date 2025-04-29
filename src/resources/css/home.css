@@ -1,0 +1,12 @@
+.page-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+
+.body {
+    background-color: #E7CEB8;
+    background-image: none; /* 背景画像を消したいならこれも */
+}
