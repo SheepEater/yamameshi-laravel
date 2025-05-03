@@ -20,6 +20,29 @@ class YamaMeshiController extends Controller
         return view('yama-meshi.index', compact('posts')); // ビューに渡す
     }
 
+
+    /**
+     * 投稿検索
+     */
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
+            ->withCount('likes')
+            ->when($keyword, function ($q, $kw) {
+                $q->where('title',   'like', "%{$kw}%")
+                  ->orWhere('place', 'like', "%{$kw}%")
+                  ->orWhere('food',  'like', "%{$kw}%")
+                  ->orWhere('content','like', "%{$kw}%");
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->appends(['keyword' => $keyword]);
+
+        return view('index', compact('posts'));
+    }
+
     public function create()
     {
         return view('yama-meshi.create'); // 投稿作成ページ

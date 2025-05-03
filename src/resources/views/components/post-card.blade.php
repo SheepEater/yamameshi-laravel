@@ -10,7 +10,7 @@
       alt="ユーザーアイコン"
       class="w-10 h-10 rounded-full object-cover"
     >
-    <span class="font-semibold text-gray-800">{{ $post->user->name }}</span>
+    <span class="font-semibold">{{ $post->user->name }}</span>
   </div>
 
   {{-- メイン画像（あれば最初の1枚を大きく） --}}

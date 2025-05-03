@@ -10,12 +10,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
+    ,'resources/css/components/header.css'])
 </head>
 <body class="font-sans bg-gray-100">
 
     <!-- ヘッダー -->
-    <header class="w-full bg-orange-400 text-white py-4">
+    <!-- <header class="w-full bg-orange-400 text-white py-4">
         <div class="max-w-7xl mx-auto flex items-center justify-between px-6">
             <a href="{{ route('home') }}" class="flex items-center">
                 <img src="{{ asset('images/yama-meshi-logo-small.png') }}" alt="ヤマメシ ロゴ" class="w-12 h-12">
@@ -26,7 +27,10 @@
                 <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg">ログイン</a>
             </nav>
         </div>
-    </header>
+    </header> -->
+
+    
+    <x-header />
 
     <!-- メインコンテンツ -->
     <main class="bg-[#E7CEB8] py-12">

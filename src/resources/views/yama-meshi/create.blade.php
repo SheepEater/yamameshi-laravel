@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-header />
-    <h2 class="text-xl font-semibold text-gray-800 text-center mt-6">投稿を作成</h2>
+    <h2 class="text-xl font-semibold text-center mt-6">投稿を作成</h2>
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-white shadow-md rounded-lg p-6 space-y-6">

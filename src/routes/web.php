@@ -25,6 +25,8 @@ Route::get('/', function () {
     return view('index', compact('posts')); // `index.blade.php` に `$posts` を渡す
 })->name('home');
 
+Route::get('/posts/search', [YamaMeshiController::class, 'search'])->name('posts.search');
+
 
 Route::get('/about', function () {
     return view('about'); // about.blade.php ビューを返す

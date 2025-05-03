@@ -13,7 +13,7 @@
     <!-- ヘッダー -->
     <x-header />
     <div class="top-container">
-        <form action="" method="GET" class="search-form">
+        <form action="{{ route('posts.search') }}" method="GET" class="search-form">
             <input type="text" name="keyword" placeholder="投稿を検索する..." value="{{ request('keyword') }}" />
             <button type="submit">検索</button>
         </form>
@@ -27,9 +27,14 @@
             </div>
         @endif
 
+        @if(request('keyword'))
+            <p class="mb-4 text-gray-600">
+                「<strong>{{ request('keyword') }}</strong>」の検索結果：{{ $posts->total() }}件
+            </p>
+        @endif
         <!-- <h1 class="page-title">ヤマメシ</h1>たいとる -->
         <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
-
+        
         <!-- 投稿一覧 -->
          <!-- bg-white →bg-noneにした -->
         <div class="w-full max-w-4xl bg-none bg-opacity-90 shadow-lg rounded-lg mt-8 p-6">

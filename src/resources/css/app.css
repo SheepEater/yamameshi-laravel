@@ -4,3 +4,11 @@
 
 [x-cloak] { display: none !important; }
 
+body {
+    color: #00244A;
+}
+  
+  /* 必要ならリンクや見出しも同じ色に */
+a, h1, h2, h3, h4, h5, h6 {
+    color: #00244A;
+}
