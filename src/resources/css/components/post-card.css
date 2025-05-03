@@ -1,0 +1,83 @@
+/* 全体のカード枠 */
+.post-card {
+    background-color: #ffffff;
+    border-radius: 0.75rem; /* 12px */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 1rem;          /* 16px */
+    margin-bottom: 1.5rem; /* 24px */
+    overflow: hidden;
+}
+  
+  /* メイン画像 */
+.post-card-image img {
+    display: block;
+    width: 100%;
+    height: 50rem;
+    padding: 5rem;
+    border-radius: 0.5rem; /* 8px */
+}
+
+  /* タイトル */
+.post-card-title {
+    /* 文字数が多いときの調整などあればここで */
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    border-bottom: 1px solid #000;
+    /* display: inline-block; タイトルのみに下線 */
+    padding-bottom: 5px;
+}
+  
+  /* 本文の折り返し3行でクリップ */
+.line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;  
+    -webkit-line-clamp: 3;
+}
+
+/* 続きを読むリンク */
+.post-card-readmore {
+/* 必要なら追加で padding やカラー調整 */
+}
+
+/* アイコン全体のベース */
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    object-fit: contain;
+}
+  
+/* 食べ物／場所アイコン */
+.icon--food,
+.icon--place {
+    width: 1rem;   /* 16px */
+    height: 1rem;  /* 16px */
+}
+  
+/* いいね／メッセージアイコン */
+.icon--like,
+.icon--chat {
+    width: 1.25rem;  /* 20px */
+    height: 1.25rem; /* 20px */
+}
+  
+/* もしホバー時に色を変えたいなら */
+.icon--like:hover {
+    opacity: 0.8;
+}
+  
+
+/* メタ情報(アイコン＋テキスト) */
+.post-card-meta > div > div {
+/* もし細かい余白を微調整したければここで */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;  /* 左詰め */
+    gap: 0rem;                   /* お好みの間隔 */
+    padding: 0 2.5rem;               /* 必要なら左右の余白を追加 */
+}
+
+.post-card-body {
+    padding: 0% 5%;
+}

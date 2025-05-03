@@ -1,3 +1,8 @@
+body {
+    background-color: #E7CEB8;
+    padding-top: var(--header-height);
+}
+
 .page-title {
     font-size: 48px;
     font-weight: bold;
@@ -5,8 +10,60 @@
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
 }
 
-
-.body {
-    background-color: #E7CEB8;
-    background-image: none; /* 背景画像を消したいならこれも */
+/* ヘッダー高さと合わせる */
+:root {
+    --header-height: 4rem;
 }
+
+.top-container {
+    position: relative;
+    width: 100%;
+    height: 0rem;        /* h-96 なら 24rem (=384px) */
+    padding-top: 40%;
+    background-image: url('../images/main-image.png');
+    background-position: center;
+    background-size: cover; /* contain でも可ですが、通常は cover を使うことが多いです */
+    background-repeat: no-repeat;
+}
+
+/* 検索フォームのスタイル */
+.search-form {
+    position: absolute;
+    left: 50%;
+    top: 85%;                    /* 半分より結構下 */
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-form input {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-right: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+  }
+  
+.search-form button {
+    background-color: #4f46e5;   /* Tailwind の indigo-600 相当 */
+    color: #fff;
+    border: none;
+    padding: 0 1rem;
+    font-size: 1rem;
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+  
+.search-form button:hover {
+    background-color: #4338ca;   /* indigo-700 相当 */
+}
+

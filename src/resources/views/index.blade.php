@@ -6,12 +6,18 @@
     <title>ヤマメシ - 登山×料理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
+    ,'resources/css/components/header.css'])
 </head>
-<body class="min-h-screen bg-cover bg-center">
-
+<body class="body">
     <!-- ヘッダー -->
     <x-header />
+    <div class="top-container">
+        <form action="" method="GET" class="search-form">
+            <input type="text" name="keyword" placeholder="投稿を検索する..." value="{{ request('keyword') }}" />
+            <button type="submit">検索</button>
+        </form>
+    </div>
 
     <!-- メインコンテンツ -->
     <main class="flex flex-col items-center justify-center min-h-screen pt-20">
@@ -20,14 +26,13 @@
                 {{ session('success') }}
             </div>
         @endif
-        <!-- タイトル -->
-        <h1 class="page-title">ヤマメシ</h1>
+
+        <!-- <h1 class="page-title">ヤマメシ</h1>たいとる -->
         <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
 
         <!-- 投稿一覧 -->
-        <div class="w-full max-w-4xl bg-white bg-opacity-90 shadow-lg rounded-lg mt-8 p-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">投稿一覧</h2>
-
+         <!-- bg-white →bg-noneにした -->
+        <div class="w-full max-w-4xl bg-none bg-opacity-90 shadow-lg rounded-lg mt-8 p-6">
             <div id="post-list">
                 @if($posts->isEmpty())
                     <p class="text-gray-600">投稿はまだありません。</p>

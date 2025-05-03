@@ -4,7 +4,11 @@
     <!-- 💬 ボタン -->
     <button @click="open = true"
         class="text-blue-500 hover:underline">
-        💬 メッセージを送る
+        <img
+            src="{{ asset('images/icons/chat.png') }}"
+            alt="メッセージ"
+            class="icon icon--chat"
+        />
     </button>
 
     <!-- モーダル -->

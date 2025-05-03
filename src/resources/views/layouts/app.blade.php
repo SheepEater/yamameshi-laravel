@@ -12,11 +12,12 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
+        ,'resources/css/components/header.css'])
         <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased">
-        <div class="h-screen bg-gray-100 bg-cover bg-center" style="background-image: url('images/yamaimage.png'); background-size: cover; background-position: center;">
+        <div class="h-screen bg-cover bg-center">
             <!-- →半角にしている＠include('layouts.navigation') -->
 
             <!-- Page Heading -->
