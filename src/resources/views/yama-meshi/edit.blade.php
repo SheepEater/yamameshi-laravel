@@ -4,7 +4,12 @@
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
-            <form method="POST" action="{{ route('yama-meshi.update', $post) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('yama-meshi.update', $post) }}" enctype="multipart/form-data" x-data="{
+                items: {{ json_encode(old('ingredients', $post->ingredients ?? [])) }},
+                pack:  {{ json_encode(old('packing_items', $post->packing_items ?? [])) }},
+                previewUrl: '{{ !empty($post->image_paths) ? asset('storage/'.$post->image_paths[0]) : '' }}',
+                /* trigger, add, remove はそのまま */ }"
+            >
                 @csrf
                 @method('PUT')
                 <!-- タイトル -->
@@ -39,24 +44,61 @@
                 </div>
 
                 <!-- 画像（複数） -->
-                <div>
-                    <label for="images" class="block text-sm font-medium text-gray-700">画像をアップロード（複数可）</label>
-                    {{-- 既存画像があればサムネイルで表示 --}}
-                    @php $images = $post->image_paths ?? []; @endphp
-                    @if(count($images) > 0)
-                        <div class="mt-2 grid grid-cols-3 gap-2">
-                        @foreach($images as $img)
-                            <div class="w-24 h-24 overflow-hidden rounded-md border">
-                            <img
-                                src="{{ asset('storage/' . $img) }}"
-                                alt="既存画像"
-                                class="w-full h-full object-cover"
-                            >
-                            </div>
-                        @endforeach
-                        </div>
-                    @endif
-                    <input type="file" name="images[]" id="images" multiple class="mt-1 p-2 w-full border rounded-md">
+                {{-- 画像アップロード＆プレビュー（単一画像） --}}
+                <div
+                    x-data="{
+                        // 初期プレビュー：既存画像があれば表示
+                        previewUrl: '{{ isset($post) && !empty($post->image_paths) ? asset('storage/' . $post->image_paths[0]) : '' }}',
+                        trigger() {
+                        this.$refs.file.click();
+                        },
+                        add(event) {
+                        const file = event.target.files[0];
+                        if (!file) return;
+                        this.previewUrl = URL.createObjectURL(file);
+                        },
+                        remove() {
+                        this.previewUrl = '';
+                        this.$refs.file.value = null;
+                        }
+                    }"
+                    class="mb-6"
+                    >
+                    <label class="block text-sm font-medium text-gray-700 mb-2">画像をアップロード</label>
+
+                    <!-- プレビュー or ＋アイコン -->
+                    <div
+                        @click="trigger()"
+                        class="cursor-pointer w-32 h-32 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden relative"
+                    >
+                        <template x-if="previewUrl">
+                        <img
+                            :src="previewUrl"
+                            class="w-full h-full object-cover"
+                            alt="プレビュー画像"
+                        />
+                        </template>
+                        <template x-if="!previewUrl">
+                        <span class="text-3xl text-gray-400">＋</span>
+                        </template>
+
+                        <!-- キャンセルボタン -->
+                        <button
+                        x-show="previewUrl"
+                        @click.stop="remove()"
+                        class="absolute top-1 right-1 bg-white bg-opacity-75 rounded-full p-1 text-red-600 hover:bg-opacity-100"
+                        >&times;</button>
+                    </div>
+
+                    <!-- 隠しファイル入力 -->
+                    <input
+                        type="file"
+                        x-ref="file"
+                        name="images[]"
+                        accept="image/*"
+                        class="hidden"
+                        @change="add($event)"
+                    />
                 </div>
 
 

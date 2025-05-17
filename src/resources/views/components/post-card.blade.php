@@ -1,6 +1,6 @@
 @props(['post'])
 
-<div class="post-card">
+<div class="post-card" x-data="{ showMessages: false }">
     {{-- ヘッダー --}}
     <div class="post-card-header flex items-center space-x-3 mb-4">
         <img
@@ -10,7 +10,12 @@
         alt="ユーザーアイコン"
         class="w-10 h-10 rounded-full object-cover"
         >
-        <span class="font-semibold">{{ $post->user->name }}</span>
+        <div>
+            {{-- ユーザー名 --}}
+            <p class="font-semibold text-gray-800">{{ $post->user->name }}</p>
+            {{-- 数値IDを薄く表示 --}}
+            <p class="text-xs text-gray-500">ID #{{ $post->user->id }}</p>
+        </div>
     </div>
     
     <h3 class="post-card-title mb-3">
@@ -129,6 +134,7 @@
         <!-- <h3 class="post-card-title mb-3">
         {{ Str::limit($post->title, 30) }}
         </h3> -->
+        <h3 class="font-semibold">備考</h4>
         <p
             x-ref="content"
             :class="expanded ? 'post-card-content expanded' : 'post-card-content'"
@@ -153,19 +159,34 @@
 
     </div>
 
-    <!-- メッセージ一覧 -->
+    {{-- コメントを読むボタン（メッセージがあるときだけ表示） --}}
     @if($post->messages && $post->messages->isNotEmpty())
-        <div class="mt-4 bg-gray-50 p-3 rounded border border-gray-200">
-            <h4 class="text-sm font-semibold text-gray-700 mb-2">この投稿へのメッセージ</h4>
-            <ul class="space-y-2">
-                @foreach($post->messages as $msg)
-                    <li class="text-sm text-gray-800">
-                        <span class="font-bold">{{ $msg->sender->name }}</span>
-                        {{ $msg->content }}
-                        <span class="text-xs text-gray-500 ml-2">{{ $msg->created_at->format('Y/m/d H:i') }}</span>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
+        <button
+            type="button"
+            @click="showMessages = !showMessages"
+            class="text-sm text-indigo-600 hover:underline mb-2 flex items-center"
+        >
+            <span x-text="showMessages ? 'コメントを閉じる' : `コメントを読む（{{ $post->messages->count() }}件）`"></span>
+        </button>
     @endif
+
+    {{-- メッセージ一覧 --}}
+    <div
+        x-show="showMessages"
+        x-cloak
+        x-transition
+        class="mt-4 bg-gray-50 p-3 rounded border border-gray-200 space-y-2"
+    >
+        <h4 class="text-sm font-semibold text-gray-700 mb-2">この投稿へのメッセージ</h4>
+        <ul class="space-y-2 max-h-60 overflow-auto">
+        @foreach($post->messages as $msg)
+            <li class="text-sm text-gray-800">
+            <span class="font-bold">{{ $msg->sender->name }}</span>：
+            {{ $msg->content }}
+            <span class="text-xs text-gray-500 ml-2">{{ $msg->created_at->format('Y/m/d H:i') }}</span>
+            </li>
+        @endforeach
+        </ul>
+    </div>
+
 </div>
