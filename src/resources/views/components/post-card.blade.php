@@ -1,32 +1,31 @@
 @props(['post'])
 
 <div class="post-card">
-  {{-- ヘッダー --}}
-  <div class="post-card-header flex items-center space-x-3 mb-4">
-    <img
-      src="{{ $post->user->icon_path 
-        ? asset('storage/' . $post->user->icon_path) 
-        : asset('images/default-icon.png') }}"
-      alt="ユーザーアイコン"
-      class="w-10 h-10 rounded-full object-cover"
-    >
-    <span class="font-semibold">{{ $post->user->name }}</span>
-  </div>
-
-  {{-- メイン画像（あれば最初の1枚を大きく） --}}
-  @if($post->image_paths)
-    @php $first = json_decode($post->image_paths, true)[0]; @endphp
-    <div class="post-card-image mb-4">
-      <img
-        src="{{ asset('storage/' . $first) }}"
-        alt="投稿画像"
-        class="w-full h-auto object-cover"
-      >
+    {{-- ヘッダー --}}
+    <div class="post-card-header flex items-center space-x-3 mb-4">
+        <img
+        src="{{ $post->user->icon_path 
+            ? asset('storage/' . $post->user->icon_path) 
+            : asset('images/default-icon.png') }}"
+        alt="ユーザーアイコン"
+        class="w-10 h-10 rounded-full object-cover"
+        >
+        <span class="font-semibold">{{ $post->user->name }}</span>
     </div>
-  @endif
 
-  {{-- メタ情報＋アクション --}}
-  <div class="post-card-meta flex items-center justify-between mb-4">
+    @if (!empty($post->image_paths))
+        <div class="flex flex-wrap gap-2 mt-2">
+            @foreach ($post->image_paths as $img)
+                <div class="post-card-image mb-4">
+                    <img src="{{ asset('storage/' . $img) }}" class="w-full h-full object-cover">
+                </div>
+            @endforeach
+        </div>
+    @endif
+        
+
+    {{-- メタ情報＋アクション --}}
+    <div class="post-card-meta flex items-center justify-between mb-4">
     <div class="flex items-center space-x-6">
         {{-- 食べたもの --}}
         <div class="flex items-center space-x-1 text-sm text-gray-600">
@@ -42,66 +41,79 @@
 
     <div class="flex items-center space-x-4">
       {{-- いいね --}}
-      <form method="POST" action="{{ route('posts.toggleLike', $post->id) }}">
-        @csrf
-        <button type="submit" class="text-xl">
-          @auth
-            @if($post->isLikedBy(auth()->user()))
-                <span class="text-red-500">
-                    <img src="{{ asset('images/icons/fav-filled.png') }}" alt="いいね" class="icon icon--like"/>
-                </span>
-            @else
-                <span class="text-gray-400">
-                    <img src="{{ asset('images/icons/fav-outline.png') }}" alt="いいね" class="icon icon--like"/>
-                </span>
-            @endif
-          @else
-                <span class="text-gray-400">
-                    <img src="{{ asset('images/icons/fav-outline.png') }}" alt="いいね" class="icon icon--like"/>
-                </span>
-          @endauth
-        </button>
-      </form>
+        <form method="POST" action="{{ route('posts.toggleLike', $post->id) }}">
+            @csrf
+            <button type="submit" class="text-xl">
+                @auth
+                    @if($post->isLikedBy(auth()->user()))
+                        <span class="text-red-500">
+                            <img src="{{ asset('images/icons/fav-filled.png') }}" alt="いいね" class="icon icon--like"/>
+                        </span>
+                    @else
+                        <span class="text-gray-400">
+                            <img src="{{ asset('images/icons/fav-outline.png') }}" alt="いいね" class="icon icon--like"/>
+                        </span>
+                    @endif
+                @else
+                    <span class="text-gray-400">
+                        <img src="{{ asset('images/icons/fav-outline.png') }}" alt="いいね" class="icon icon--like"/>
+                    </span>
+                @endauth
+                {{-- ここでカウントを表示 --}}
+                <span class="text-sm text-gray-600">{{ $post->likes_count }}</span>
+            </button>
+        </form>
 
-      {{-- メッセージ（自分の投稿には表示しない） --}}
-      <!-- @auth
-        @if(auth()->id() !== $post->user_id)
-          <button 
-            type="button" 
-            class="text-xl"
-            @click="$dispatch('open-message-modal', { postId: {{ $post->id }} })"
-          >💬</button>
-        @endif
-      @endauth -->
+        {{-- メッセージ（自分の投稿には表示しない） --}}
         @auth
-            @if (auth()->id() !== $post->user_id)
-                <x-message-modal :post="$post" />
-            @endif
+            <x-message-modal :post="$post" />
         @endauth
     </div>
-  </div>
+    </div>
 
-  {{-- 本文エリア --}}
-  <div class="post-card-body mb-4">
-    <p class="text-xs text-gray-500 mb-1">
-      <!-- {{ optional($post->date)->format('Y.m.d') ?? '未入力' }} -->
-      {{ $post->date ?? '未入力' }}
-    </p>
-    <h3 class="post-card-title mb-3">
-      {{ Str::limit($post->title, 30) }}
-    </h3>
-    <p class="post-card-content text-sm text-gray-700 line-clamp-3">
-      {{ $post->content }}
-    </p>
-  </div>
+    {{-- 本文エリア --}}
+    <div class="post-card-body mb-4"
+        x-data="{
+        expanded: false,
+        isTruncated: false
+        }"
+        x-init="$nextTick(() => {
+        const el = $refs.content;
+        // scrollHeight が clientHeight を超えていれば折り返し発生中
+        isTruncated = el.scrollHeight > el.clientHeight;
+        })"
+    >
 
-  {{-- 続きを読む --}}
-  <div class="text-right">
-    <a href="#"
-       class="post-card-readmore text-sm hover:underline text-indigo-600">
-      続きを読む
-    </a>
-  </div>
+        <p class="text-xs text-gray-500 mb-1">
+        {{ $post->date ?? '未入力' }}
+        </p>
+        <h3 class="post-card-title mb-3">
+        {{ Str::limit($post->title, 30) }}
+        </h3>
+        <p
+            x-ref="content"
+            :class="expanded ? 'post-card-content expanded' : 'post-card-content'"
+            class="text-sm text-gray-700 mb-2"
+        >{{ $post->content }}
+        </p>
+
+        <button
+            x-show="isTruncated && !expanded"
+            @click="expanded = true"
+            class="text-sm text-indigo-600 hover:underline"
+        >
+            続きを読む
+        </button>
+        <button
+            x-show="expanded"
+            @click="expanded = false"
+            class="text-sm text-gray-600 hover:underline"
+        >
+            閉じる
+        </button>
+
+    </div>
+
     <!-- メッセージ一覧 -->
     @if($post->messages && $post->messages->isNotEmpty())
         <div class="mt-4 bg-gray-50 p-3 rounded border border-gray-200">

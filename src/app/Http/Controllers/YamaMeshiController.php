@@ -50,17 +50,23 @@ class YamaMeshiController extends Controller
 
     public function store(Request $request)
     {
-        // 1️⃣ バリデーション
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'nullable|string',
-            'place' => 'nullable|string|max:255',
-            'food' => 'nullable|string|max:255',
-            'date' => 'nullable|date',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 複数画像対応
-        ]);
 
         $imagePaths = [];
+
+        // 1️⃣ バリデーション
+        $validated = $request->validate([
+            'title' => 'required|string|max:30',
+            'content' => 'nullable|string|max:200',  // 備考は最大200文字
+            'place' => 'nullable|string|max:30',
+            'food' => 'nullable|string|max:30',
+            'date' => 'nullable|date',
+            'ingredients'   => 'nullable|array',
+            'ingredients.*' => 'nullable|string|max:100',
+            'packing_items'   => 'nullable|array',
+            'packing_items.*' => 'nullable|string|max:100',
+            'images'  => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 複数画像対応
+        ]);
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -75,11 +81,56 @@ class YamaMeshiController extends Controller
             'place' => $validated['place'] ?? null,
             'food' => $validated['food'] ?? null,
             'date' => $validated['date'] ?? null,
-            'image_paths' => json_encode($imagePaths),
+            'ingredients'    => $validated['ingredients'] ?? [],
+            'packing_items'  => $validated['packing_items'] ?? [],
+            'image_paths' => $imagePaths,
             'user_id' => auth()->id(),
         ]);
-    
+   
         // 投稿完了メッセージとリダイレクト
         return redirect()->route('home')->with('success', '投稿が完了しました！');
-    }    
+    }
+    
+    /**
+     * 投稿内容編集、削除
+     */
+    public function edit(YamaMeshiPost $post)
+    {
+        // 自分の投稿以外は 403
+        abort_unless(auth()->id() === $post->user_id, 403);
+
+        return view('yama-meshi.edit', compact('post'));
+    }
+
+    public function update(Request $request, YamaMeshiPost $post)
+    {
+        abort_unless(auth()->id() === $post->user_id, 403);
+
+        $validated = $request->validate([
+            'title'   => 'required|string|max:30',
+            'place'   => 'nullable|string|max:30',
+            'food'    => 'nullable|string|max:30',
+            'date'    => 'nullable|date',
+            'content' => 'nullable|string|max:200',
+            // 画像の更新は今回スキップ。必要なら同様に実装。
+        ]);
+
+        $post->update($validated);
+
+        return redirect()
+            ->route('mypage')
+            ->with('success', '投稿を更新しました。');
+    }
+
+    public function destroy(YamaMeshiPost $post)
+    {
+        abort_unless(auth()->id() === $post->user_id, 403);
+
+        $post->delete();
+
+        return redirect()
+            ->route('mypage')
+            ->with('success', '投稿を削除しました。');
+    }
+    
 }

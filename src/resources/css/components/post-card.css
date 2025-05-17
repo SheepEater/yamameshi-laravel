@@ -12,8 +12,10 @@
 .post-card-image img {
     display: block;
     width: 100%;
-    height: 50rem;
-    padding: 5rem;
+    /* height: 50rem;
+    padding: 5rem; */
+    width: 100%;
+    height: auto;
     border-radius: 0.5rem; /* 8px */
 }
 
@@ -23,17 +25,25 @@
     font-weight: bold;
     font-size: 1.5rem;
     line-height: 1.5;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid #00244A;
     /* display: inline-block; タイトルのみに下線 */
     padding-bottom: 5px;
 }
-  
-  /* 本文の折り返し3行でクリップ */
-.line-clamp-3 {
-    overflow: hidden;
+
+.post-card-content {
+    /* 省略 */
+    white-space: pre-wrap; /* 改行をそのまま表示 */
+    word-break: break-word; /* 長い行も折り返し */
     display: -webkit-box;
-    -webkit-box-orient: vertical;  
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;      /* 初期は2行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+  
+.post-card-content.expanded {
+    -webkit-line-clamp: unset;  /* 行数制限を解除 */
+    max-height: none;
 }
 
 /* 続きを読むリンク */
@@ -69,15 +79,20 @@
   
 
 /* メタ情報(アイコン＋テキスト) */
-.post-card-meta > div > div {
-/* もし細かい余白を微調整したければここで */
+.post-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .post-card-meta .icon-group,
+  .post-card-meta .action-group {
     display: flex;
     align-items: center;
-    justify-content: flex-start;  /* 左詰め */
-    gap: 0rem;                   /* お好みの間隔 */
-    padding: 0 2.5rem;               /* 必要なら左右の余白を追加 */
-}
+    gap: 1rem;
+  }
 
 .post-card-body {
-    padding: 0% 5%;
+    /* padding: 0% 5%; */
+    padding: 0.5rem 1rem;
 }

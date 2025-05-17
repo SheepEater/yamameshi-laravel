@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ヤマメシ - 登山×料理</title>
-    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
     ,'resources/css/components/header.css'])
 </head>
-<body class="body">
+<body x-data="{ showTop: false }" @scroll.window="showTop = window.pageYOffset > 200" class="body">
     <!-- ヘッダー -->
     <x-header />
     <div class="top-container">
@@ -53,6 +52,15 @@
             </div>
         </div>
     </main>
-
+    {{-- トップに戻るボタン --}}
+    <button
+        x-show="showTop"
+        @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
+        class="fixed bottom-8 right-8 bg-[#00244A] text-white p-3 rounded-full shadow-lg transition-opacity duration-300"
+        style="display: none;"
+        aria-label="トップに戻る"
+    >
+        ↑
+    </button>
 </body>
 </html>

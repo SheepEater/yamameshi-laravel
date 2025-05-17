@@ -20,10 +20,10 @@
             <!-- プロフィールアイコン -->
             <div>
                 <label for="icon">アイコン画像</label>
-                <input type="file" name="icon" id="icon" class="mt-1 block w-full border rounded p-2">
-                @if($user->icon_path)
-                    <img src="{{ asset('storage/' . $user->icon_path) }}" class="mt-2 w-16 h-16 rounded-full">
-                @endif
+                <img src="{{ Auth::user()->icon_path
+                    ? asset('storage/' . Auth::user()->icon_path)
+                    : asset('images/default-icon.png') }}" alt="ユーザーアイコン" class="mt-2 w-16 h-16 rounded-full">
+                <input type="file" name="icon" id="icon" class="mt-1 block w-full border rounded p-2">    
             </div>
 
             <!-- 名前 -->

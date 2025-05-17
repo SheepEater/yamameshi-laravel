@@ -6,7 +6,9 @@
         <!-- ユーザー情報 -->
         <div class="bg-white shadow-md rounded-lg p-6 flex justify-between items-center">
             <div class="flex items-center">
-            <img src="{{ asset('storage/' . $user->icon_path) }}" class="mt-2 w-16 h-16 rounded-full">
+            <img src="{{ Auth::user()->icon_path
+                ? asset('storage/' . Auth::user()->icon_path)
+                : asset('images/default-icon.png') }}" alt="ユーザーアイコン" class="mt-2 w-16 h-16 rounded-full">
                 <div>
                     <h3 class="text-lg font-bold text-gray-800">{{ $user->name }}</h3>
                     <p class="text-gray-600">{{ $user->email }}</p>
@@ -22,14 +24,6 @@
                     }
                 </style>
                 <a href="{{ route('profile.edit') }}" class="force-orange font-bold py-2 px-4 rounded border border-black rounded-lg">プロフィール編集</a>
-
-                <!-- <form method="POST" action="{{ route('profile.destroy') }}">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg">
-                        アカウント削除
-                    </button>
-                </form> -->
             </div>
         </div>
 
@@ -53,7 +47,28 @@
             <div x-show="tab === 'posts'">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4">自分の投稿</h2>
                 @forelse ($posts as $post)
-                    <x-post-card :post="$post" />
+                    <div class="relative group">
+                        <x-post-card :post="$post" />
+
+                        {{-- 編集／削除ボタン --}}
+                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <a
+                                href="{{ route('yama-meshi.edit', $post) }}"
+                                class="mr-2 text-sm text-blue-600 hover:underline"
+                            >編集</a>
+                            <form
+                                action="{{ route('yama-meshi.destroy', $post) }}"
+                                method="POST"
+                                class="inline"
+                                onsubmit="return confirm('本当に削除しますか？');"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-sm text-red-600 hover:underline"
+                                >削除</button>
+                            </form>
+                        </div>
+                    </div>
                 @empty
                     <p>投稿はまだありません。</p>
                 @endforelse

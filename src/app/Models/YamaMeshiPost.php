@@ -19,6 +19,13 @@ class YamaMeshiPost extends Model
         'user_id',
     ];
 
+    protected $casts = [
+        'image_paths' => 'array',
+        'ingredients'    => 'array',
+        'packing_items'  => 'array',
+        'date'           => 'date',
+    ];
+
     // 投稿に関連するユーザー
     public function user()
     {
@@ -39,4 +46,5 @@ class YamaMeshiPost extends Model
     public function messages(){
         return $this->hasMany(Message::class, 'post_id');
     }
+
 }

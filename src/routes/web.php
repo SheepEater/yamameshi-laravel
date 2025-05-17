@@ -42,6 +42,18 @@ Route::middleware(['auth'])->group(function () {
     // マイページ
     Route::get('mypage', [UserController::class, 'mypage'])->name('mypage');
 
+    
+    // 編集画面を表示
+    Route::get('/yama-meshi/{post}/edit', [YamaMeshiController::class, 'edit'])
+    ->name('yama-meshi.edit');
+    // 更新処理
+    Route::put('/yama-meshi/{post}', [YamaMeshiController::class, 'update'])
+    ->name('yama-meshi.update');
+    // 削除処理
+    Route::delete('/yama-meshi/{post}', [YamaMeshiController::class, 'destroy'])
+    ->name('yama-meshi.destroy');
+
+
     // プロフィール編集
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -53,10 +65,5 @@ Route::middleware(['auth'])->group(function () {
     // メッセージ送信
     Route::post('/messages/send', [MessageController::class, 'send'])->name('messages.send');
 });
-
-// ....いらないかも
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
