@@ -12,7 +12,16 @@
         >
         <span class="font-semibold">{{ $post->user->name }}</span>
     </div>
+    
+    <h3 class="post-card-title mb-3">
+        {{ Str::limit($post->title, 30) }}
+    </h3>
+    <p class="text-xs text-gray-500 mb-1">
+        {{ $post->date  }}
+        <!-- {{ $post->date ?? '未入力' }} -->
+    </p>
 
+    {{-- 投稿画像 --}}
     @if (!empty($post->image_paths))
         <div class="flex flex-wrap gap-2 mt-2">
             @foreach ($post->image_paths as $img)
@@ -40,7 +49,7 @@
     </div>
 
     <div class="flex items-center space-x-4">
-      {{-- いいね --}}
+        {{-- いいね --}}
         <form method="POST" action="{{ route('posts.toggleLike', $post->id) }}">
             @csrf
             <button type="submit" class="text-xl">
@@ -71,6 +80,36 @@
     </div>
     </div>
 
+
+    {{-- レシピ --}}
+    @isset($post->ingredients)
+        @if(count($post->ingredients))
+            <div class="mt-4">
+                <h4 class="font-semibold">レシピ</h4>
+                <ul class="list-disc list-inside text-sm text-gray-700">
+                    @foreach($post->ingredients as $ing)
+                        <li>{{ $ing }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    @endisset
+
+    {{-- パッキングリスト --}}
+    @isset($post->packing_items)
+        @if(count($post->packing_items))
+            <div class="mt-4">
+                <h4 class="font-semibold">パッキングリスト</h4>
+                <ul class="list-decimal list-inside text-sm text-gray-700">
+                    @foreach($post->packing_items as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+    @endisset
+
+
     {{-- 本文エリア --}}
     <div class="post-card-body mb-4"
         x-data="{
@@ -84,12 +123,12 @@
         })"
     >
 
-        <p class="text-xs text-gray-500 mb-1">
+        <!-- <p class="text-xs text-gray-500 mb-1">
         {{ $post->date ?? '未入力' }}
-        </p>
-        <h3 class="post-card-title mb-3">
+        </p> -->
+        <!-- <h3 class="post-card-title mb-3">
         {{ Str::limit($post->title, 30) }}
-        </h3>
+        </h3> -->
         <p
             x-ref="content"
             :class="expanded ? 'post-card-content expanded' : 'post-card-content'"

@@ -15,6 +15,8 @@ class YamaMeshiPost extends Model
         'place',
         'food',
         'date',
+        'ingredients',     // ← 追加
+        'packing_items',   // ← 追加
         'image_paths',
         'user_id',
     ];

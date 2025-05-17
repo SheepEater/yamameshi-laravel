@@ -112,6 +112,10 @@ class YamaMeshiController extends Controller
             'food'    => 'nullable|string|max:30',
             'date'    => 'nullable|date',
             'content' => 'nullable|string|max:200',
+            'ingredients'    => 'nullable|array',
+            'ingredients.*'  => 'nullable|string|max:100',
+            'packing_items'  => 'nullable|array',
+            'packing_items.*'=> 'nullable|string|max:100',
             // 画像の更新は今回スキップ。必要なら同様に実装。
         ]);
 
