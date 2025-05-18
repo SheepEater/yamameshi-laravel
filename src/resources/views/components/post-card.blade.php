@@ -19,7 +19,10 @@
     </div>
     
     <h3 class="post-card-title mb-3">
-        {{ Str::limit($post->title, 30) }}
+        <a
+            href="{{ route('yama-meshi.show', $post) }}"
+            class="hover:underline text-gray-800"
+        >{{ Str::limit($post->title, 30) }}</a>
     </h3>
     <p class="text-xs text-gray-500 mb-1">
         {{ $post->date  }}
@@ -127,14 +130,7 @@
         isTruncated = el.scrollHeight > el.clientHeight;
         })"
     >
-
-        <!-- <p class="text-xs text-gray-500 mb-1">
-        {{ $post->date ?? '未入力' }}
-        </p> -->
-        <!-- <h3 class="post-card-title mb-3">
-        {{ Str::limit($post->title, 30) }}
-        </h3> -->
-        <h3 class="font-semibold">備考</h4>
+        <h3>  </h3>
         <p
             x-ref="content"
             :class="expanded ? 'post-card-content expanded' : 'post-card-content'"

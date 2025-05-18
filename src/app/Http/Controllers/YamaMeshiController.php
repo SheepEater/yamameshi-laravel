@@ -20,75 +20,59 @@ class YamaMeshiController extends Controller
         return view('yama-meshi.index', compact('posts')); // ビューに渡す
     }
 
-
     /**
      * 投稿検索
      */
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
-
-        $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
-            ->withCount('likes')
-            ->when($keyword, function ($q, $kw) {
-                $q->where('title',   'like', "%{$kw}%")
-                  ->orWhere('place', 'like', "%{$kw}%")
-                  ->orWhere('food',  'like', "%{$kw}%")
-                  ->orWhere('content','like', "%{$kw}%");
-            })
-            ->orderBy('created_at', 'desc')
-            ->paginate(10)
-            ->appends(['keyword' => $keyword]);
-
-        return view('index', compact('posts'));
-    }
-
-    public function create()
-    {
-        return view('yama-meshi.create'); // 投稿作成ページ
-    }
-
-    public function store(Request $request)
-    {
-
-        $imagePaths = [];
-
-        // 1️⃣ バリデーション
-        $validated = $request->validate([
-            'title' => 'required|string|max:30',
-            'content' => 'nullable|string|max:200',  // 備考は最大200文字
-            'place' => 'nullable|string|max:30',
-            'food' => 'nullable|string|max:30',
-            'date' => 'nullable|date',
-            'ingredients'   => 'nullable|array',
-            'ingredients.*' => 'nullable|string|max:100',
-            'packing_items'   => 'nullable|array',
-            'packing_items.*' => 'nullable|string|max:100',
-            'images'  => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 複数画像対応
-        ]);
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('uploads', 'public');
-                $imagePaths[] = $path;
-            }
+        $keyword    = $request->input('keyword');
+        $place      = $request->input('place');
+        $food       = $request->input('food');
+        $dateFrom   = $request->input('date_from');
+        $dateTo     = $request->input('date_to');
+    
+        // 絞り込み元のクエリ
+        $query = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
+            ->withCount('likes');
+    
+        // キーワード
+        if ($keyword) {
+            $query->where(function($q) use ($keyword) {
+                $q->where('title','like',"%{$keyword}%")
+                  ->orWhere('place','like',"%{$keyword}%")
+                  ->orWhere('food','like',"%{$keyword}%")
+                  ->orWhere('content','like',"%{$keyword}%");
+            });
         }
-
-        YamaMeshiPost::create([
-            'title' => $validated['title'],
-            'content' => $validated['content'] ?? null,
-            'place' => $validated['place'] ?? null,
-            'food' => $validated['food'] ?? null,
-            'date' => $validated['date'] ?? null,
-            'ingredients'    => $validated['ingredients'] ?? [],
-            'packing_items'  => $validated['packing_items'] ?? [],
-            'image_paths' => $imagePaths,
-            'user_id' => auth()->id(),
-        ]);
-   
-        // 投稿完了メッセージとリダイレクト
-        return redirect()->route('home')->with('success', '投稿が完了しました！');
+    
+        // 場所フィルター
+        if ($place) {
+            $query->where('place', $place);
+        }
+    
+        // 食べものフィルター
+        if ($food) {
+            $query->where('food', $food);
+        }
+    
+        // 日付範囲フィルター
+        if ($dateFrom) {
+            $query->whereDate('date', '>=', $dateFrom);
+        }
+        if ($dateTo) {
+            $query->whereDate('date', '<=', $dateTo);
+        }
+    
+        // ページング付きで取得
+        $posts = $query->orderBy('created_at','desc')
+            ->paginate(10)
+            ->appends($request->only(['keyword','place','food','date_from','date_to']));
+    
+        // ドロップダウン肢用のユニーク値取得
+        $places = YamaMeshiPost::distinct()->pluck('place')->filter()->all();
+        $foods  = YamaMeshiPost::distinct()->pluck('food')->filter()->all();
+    
+        return view('index', compact('posts','places','foods'));
     }
     
     /**
@@ -135,6 +119,17 @@ class YamaMeshiController extends Controller
         return redirect()
             ->route('mypage')
             ->with('success', '投稿を削除しました。');
+    }
+
+    /**
+     * 投稿詳細ページの表示
+     */
+    public function show(YamaMeshiPost $post)
+    {
+        // リレーションを eager load ※コメントやいいねも表示したい場合
+        $post->load(['user', 'messages.sender']);
+        $post->loadCount('likes');
+        return view('yama-meshi.show', compact('post'));
     }
     
 }

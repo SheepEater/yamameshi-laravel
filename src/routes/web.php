@@ -20,17 +20,24 @@ use App\Models\YamaMeshiPost;
 |
 */
 
-Route::get('/', function () {
-    $posts = YamaMeshiPost::with(['user', 'likes', 'messages'])->withCount('likes')->latest()->paginate(10);
-    return view('index', compact('posts')); // `index.blade.php` に `$posts` を渡す
-})->name('home');
+// Route::get('/', function () {
+//     $posts = YamaMeshiPost::with(['user', 'likes', 'messages'])->withCount('likes')->latest()->paginate(10);
+//     return view('index', compact('posts')); // `index.blade.php` に `$posts` を渡す
+// })->name('home');
 
-Route::get('/posts/search', [YamaMeshiController::class, 'search'])->name('posts.search');
 
+
+Route::get('/', [YamaMeshiController::class, 'search'])
+    ->name('home');
 
 Route::get('/about', function () {
     return view('about'); // about.blade.php ビューを返す
 })->name('about'); // 任意の名前をつけておく（ここでは 'about'）
+
+// 詳細ページのルート
+Route::get('/yama-meshi/{post}', [YamaMeshiController::class, 'show'])
+    ->name('yama-meshi.show');
+
 
 // 認証が必要なルート
 Route::middleware(['auth'])->group(function () {
@@ -42,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     // マイページ
     Route::get('mypage', [UserController::class, 'mypage'])->name('mypage');
 
-    
+
     // 編集画面を表示
     Route::get('/yama-meshi/{post}/edit', [YamaMeshiController::class, 'edit'])
     ->name('yama-meshi.edit');

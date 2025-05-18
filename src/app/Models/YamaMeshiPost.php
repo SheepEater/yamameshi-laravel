@@ -45,8 +45,8 @@ class YamaMeshiPost extends Model
         return $this->likes->contains('user_id', $user->id);
     }
 
-    public function messages(){
+    public function messages()
+    {
         return $this->hasMany(Message::class, 'post_id');
     }
-
 }

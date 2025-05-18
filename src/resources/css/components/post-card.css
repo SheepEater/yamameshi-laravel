@@ -1,14 +1,17 @@
 /* 全体のカード枠 */
 .post-card {
     background-color: #ffffff;
-    border-radius: 0.75rem; /* 12px */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 1rem;          /* 16px */
-    margin-bottom: 1.5rem; /* 24px */
+    border-radius: 0.75rem;
+    /* 12px */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    /* 16px */
+    margin-bottom: 1.5rem;
+    /* 24px */
     overflow: hidden;
 }
-  
-  /* メイン画像 */
+
+/* メイン画像 */
 .post-card-image img {
     display: block;
     width: 100%;
@@ -16,10 +19,11 @@
     padding: 5rem; */
     width: 100%;
     height: auto;
-    border-radius: 0.5rem; /* 8px */
+    border-radius: 0.5rem;
+    /* 8px */
 }
 
-  /* タイトル */
+/* タイトル */
 .post-card-title {
     /* 文字数が多いときの調整などあればここで */
     font-weight: bold;
@@ -32,23 +36,27 @@
 
 .post-card-content {
     /* 省略 */
-    white-space: pre-wrap; /* 改行をそのまま表示 */
-    word-break: break-word; /* 長い行も折り返し */
+    white-space: pre-wrap;
+    /* 改行をそのまま表示 */
+    word-break: break-word;
+    /* 長い行も折り返し */
     display: -webkit-box;
-    -webkit-line-clamp: 2;      /* 初期は2行 */
+    -webkit-line-clamp: 2;
+    /* 初期は2行 */
     -webkit-box-orient: vertical;
     overflow: hidden;
     transition: all 0.3s;
 }
-  
+
 .post-card-content.expanded {
-    -webkit-line-clamp: unset;  /* 行数制限を解除 */
+    -webkit-line-clamp: unset;
+    /* 行数制限を解除 */
     max-height: none;
 }
 
 /* 続きを読むリンク */
 .post-card-readmore {
-/* 必要なら追加で padding やカラー調整 */
+    /* 必要なら追加で padding やカラー調整 */
 }
 
 /* アイコン全体のベース */
@@ -57,26 +65,30 @@
     vertical-align: middle;
     object-fit: contain;
 }
-  
+
 /* 食べ物／場所アイコン */
 .icon--food,
 .icon--place {
-    width: 1rem;   /* 16px */
-    height: 1rem;  /* 16px */
+    width: 1rem;
+    /* 16px */
+    height: 1rem;
+    /* 16px */
 }
-  
+
 /* いいね／メッセージアイコン */
 .icon--like,
 .icon--chat {
-    width: 1.25rem;  /* 20px */
-    height: 1.25rem; /* 20px */
+    width: 1.25rem;
+    /* 20px */
+    height: 1.25rem;
+    /* 20px */
 }
-  
+
 /* もしホバー時に色を変えたいなら */
 .icon--like:hover {
     opacity: 0.8;
 }
-  
+
 
 /* メタ情報(アイコン＋テキスト) */
 .post-card-meta {
@@ -84,15 +96,26 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-  }
-  .post-card-meta .icon-group,
-  .post-card-meta .action-group {
+}
+
+.post-card-meta .icon-group,
+.post-card-meta .action-group {
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
+}
 
 .post-card-body {
     /* padding: 0% 5%; */
     padding: 0.5rem 1rem;
+}
+
+/* 備考欄についてのスタイル */
+.post-card-body h3 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    border-bottom: 1px solid #00244A;
+    /* display: inline-block; タイトルのみに下線 */
+    padding-bottom: 5px;
 }

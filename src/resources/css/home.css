@@ -1,5 +1,15 @@
+:root {
+    --ym-primary:    #00244A;
+    --ym-secondary:  #E7CEB8;
+    --ym-text:       #00244A;
+    --ym-bg:         #FFFFFF;
+    --ym-radius:     0.5rem;
+    --ym-gap:        1rem;
+    --header-height: 4rem; /* ヘッダー高さと合わせる */
+}
+
 body {
-    background-color: #E7CEB8;
+    background-color: var(--ym-secondary);
     padding-top: var(--header-height);
 }
 
@@ -8,11 +18,6 @@ body {
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-}
-
-/* ヘッダー高さと合わせる */
-:root {
-    --header-height: 4rem;
 }
 
 .top-container {
@@ -26,6 +31,12 @@ body {
     background-repeat: no-repeat;
 }
 
+/* 検索フォームのラッピング */
+.top-container form {
+    background: rgba(255,255,255,0.8);
+    padding: var(--ym-gap);
+    border-radius: var(--ym-radius);
+  }
 /* 検索フォームのスタイル */
 .search-form {
     position: absolute;
@@ -67,3 +78,21 @@ body {
     background-color: #4338ca;   /* indigo-700 相当 */
 }
 
+.post-list-wrapper {
+    border-radius: var(--ym-radius);
+    padding: calc(var(--ym-gap)*1.5);
+}
+
+.scroll-top {
+    background-color: var(--ym-primary);
+    color: white;
+    width: 3rem; height: 3rem;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s, opacity 0.2s;
+}
+.scroll-top:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+}

@@ -1,0 +1,20 @@
+.search-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--ym-gap);
+    margin-top: 4rem;
+}
+
+.search-form input,
+.search-form select {
+    border: 1px solid var(--ym-primary);
+    border-radius: var(--ym-radius);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+.search-form button {
+    background-color: var(--ym-primary);
+    color: white;
+    font-weight: bold;
+}
+  

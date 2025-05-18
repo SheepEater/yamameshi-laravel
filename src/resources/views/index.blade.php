@@ -6,17 +6,55 @@
     <title>ヤマメシ - 登山×料理</title>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
-    ,'resources/css/components/header.css'])
+    ,'resources/css/components/header.css', 'resources/css/components/search.css'])
 </head>
 <body x-data="{ showTop: false }" @scroll.window="showTop = window.pageYOffset > 200" class="body">
     <!-- ヘッダー -->
     <x-header />
     <div class="top-container">
-        <form action="{{ route('posts.search') }}" method="GET" class="search-form">
-            <input type="text" name="keyword" placeholder="投稿を検索する..." value="{{ request('keyword') }}" />
-            <button type="submit">検索</button>
+        <form method="GET" action="{{ route('home') }}" class="search-form mb-6">
+            {{-- キーワード --}}
+            <div class="col-span-1 sm:col-span-3 lg:col-span-2">
+                <input
+                type="text"
+                name="keyword"
+                value="{{ request('keyword') }}"
+                placeholder="キーワード検索"
+                class="w-full border rounded p-2"
+                >
+            </div>
+
+            {{-- 日付From --}}
+            <div>
+                <input
+                type="date"
+                name="date_from"
+                value="{{ request('date_from') }}"
+                class="w-full border rounded p-2"
+                >
+            </div>
+
+            {{-- 日付To --}}
+            <div>
+                <input
+                type="date"
+                name="date_to"
+                value="{{ request('date_to') }}"
+                class="w-full border rounded p-2"
+                >
+            </div>
+
+            {{-- 送信ボタン --}}
+            <div class="col-span-1 sm:col-span-3 lg:col-span-1">
+                <button
+                type="submit"
+                class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold p-2 rounded"
+                >絞り込む</button>
+            </div>
         </form>
+
     </div>
+    
 
     <!-- メインコンテンツ -->
     <main class="flex flex-col items-center justify-center min-h-screen pt-20">
@@ -31,12 +69,11 @@
                 「<strong>{{ request('keyword') }}</strong>」の検索結果：{{ $posts->total() }}件
             </p>
         @endif
-        <!-- <h1 class="page-title">ヤマメシ</h1>たいとる -->
+        
         <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
         
         <!-- 投稿一覧 -->
-         <!-- bg-white →bg-noneにした -->
-        <div class="w-full max-w-4xl bg-none bg-opacity-90 shadow-lg rounded-lg mt-8 p-6">
+        <div class="w-full max-w-4xl post-list-wrapper">
             <div id="post-list">
                 @if($posts->isEmpty())
                     <p class="text-gray-600">投稿はまだありません。</p>
@@ -56,8 +93,7 @@
     <button
         x-show="showTop"
         @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-        class="fixed bottom-8 right-8 bg-[#00244A] text-white p-3 rounded-full shadow-lg transition-opacity duration-300"
-        style="display: none;"
+        class="scroll-top fixed bottom-8 right-8"
         aria-label="トップに戻る"
     >
         ↑
