@@ -14,22 +14,6 @@
     ,'resources/css/components/header.css'])
 </head>
 <body class="font-sans bg-gray-100">
-
-    <!-- ヘッダー -->
-    <!-- <header class="w-full bg-orange-400 text-white py-4">
-        <div class="max-w-7xl mx-auto flex items-center justify-between px-6">
-            <a href="{{ route('home') }}" class="flex items-center">
-                <img src="{{ asset('images/yama-meshi-logo-small.png') }}" alt="ヤマメシ ロゴ" class="w-12 h-12">
-                <h1 class="ml-3 text-2xl font-bold">YAMA-MESHI</h1>
-            </a>
-            <nav class="space-x-4">
-                <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg">新規登録</a>
-                <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg">ログイン</a>
-            </nav>
-        </div>
-    </header> -->
-
-    
     <x-header />
 
     <!-- メインコンテンツ -->

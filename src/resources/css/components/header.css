@@ -1,139 +1,180 @@
-/* ────────────────────────────
-   Header 全体
-──────────────────────────── */
+/* resources/css/components/header.css */
+
+/* ベースレイアウト */
 .site-header {
-    width: 100%;
-    height: 4rem;
-    position: fixed;   /* ヘッダーを常に上部に */
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 50;
+    width: 100%;
+    height: var(--header-height);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1.5rem;
-    /* background: transparent; 背景色はページのものを透かす */
-    background-color: rgba(255, 255, 255, 0.7);
-    /* backdrop-filter: blur(8px); */
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    padding: 0 var(--ym-gap);
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
-  
-/* ────────────────────────────
-    左側：ロゴ＋ナビ
-──────────────────────────── */
+
+/* 左側：ロゴ＋ナビ */
 .site-header__left {
     display: flex;
     align-items: center;
+    gap: var(--ym-gap);
 }
-  
-/* ロゴ */
+
 .site-header__logo img {
-    /* width: 4.25rem;  36px */
-    /* height: 4.25rem; */
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
+    height: calc(var(--header-height) * 0.6);
+    width: auto;
+    display: block;
 }
-  
-/* ナビリンク */
+
 .site-header__nav {
-    margin-left: 1rem;       /* ロゴとの間 */
-    display: flex;
-    gap: 2rem;
+    display: none;
 }
+
 .site-header__nav-link {
+    margin-left: var(--ym-gap);
     font-weight: 600;
-    text-decoration: none;
+    color: var(--ym-text);
     transition: color 0.2s;
 }
+
 .site-header__nav-link:hover {
-    color: #16a34a;             /* green-600 */
+    color: var(--ym-primary);
 }
-  
-/* ────────────────────────────
-    右側：ユーザーメニュー
-──────────────────────────── */
+
+/* 右側：ユーザーアイコン／ボタン */
 .site-header__right {
     position: relative;
     display: flex;
     align-items: center;
+    gap: var(--ym-gap);
+    justify-content: flex-end;
+    flex: 1;
+    overflow: visible;       /* ← 追記 */
+    z-index: 100;            /* ドロップダウンより背面 */
 }
-  
-/* 未ログイン時のボタン群 */
-.site-header__btn-group {
-    display: flex;
-    gap: 1rem;
-}
-.site-header__btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: #ffffff;
-    color: #1f2937;
-    border: 1px solid #1f2937;
-    border-radius: 9999px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-.site-header__btn:hover {
-    background: #f9f9f9;
-}
-  
-/* ログイン時のアイコンボタン */
+
+/* アバターボタン */
 .site-header__avatar-btn {
     background: none;
     border: none;
     padding: 0;
     cursor: pointer;
 }
+
 .site-header__avatar-btn img {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 9999px;
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
     object-fit: cover;
+    border: 2px solid var(--ym-primary);
 }
-  
+
 /* ドロップダウン */
 .site-header__dropdown {
     position: absolute;
     right: 0;
-    margin-top: 0.5rem;
-    width: 12rem;
-    background: #ffffff;
-    border: 1px solid #e5e7eb;  /* gray-200 */
-    border-radius: 0.375rem;     /* 6px */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    top: calc(var(--header-height) + 0.5rem);
+    background-color: var(--ym-bg);
+    border: 1px solid #ddd;
+    border-radius: var(--ym-radius);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    min-width: 10rem;
+    z-index: 200;            /* ← 追記 */
 }
+
 .site-header__dropdown-link {
     display: block;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1rem;
     font-size: 0.875rem;
-    color: #1f2937;
-    text-decoration: none;
+    color: var(--ym-text);
     transition: background 0.2s;
 }
+
 .site-header__dropdown-link:hover {
-    background: #f3f4f6;         /* gray-100 */
+    background-color: #f5f5f5;
 }
-/* ログアウトだけ赤文字に */
+
 .site-header__dropdown-link--danger {
-    color: #dc2626;             /* red-600 */
+    color: #e3342f;
 }
-  
-/* ────────────────────────────
-    メディアクエリ：モバイル調整
-──────────────────────────── */
-@media (max-width: 640px) {
-    .site-header {
-        padding: 0.5rem 1rem;
-    }
+
+/* 未ログイン時のボタン群 */
+.site-header__btn-group {
+    display: none;
+    gap: 0.5rem;
+}
+
+.site-header__btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--ym-radius);
+    font-weight: 600;
+    background-color: var(--ym-primary);
+    color: white;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.site-header__btn:hover {
+    background-color: #001f3b;
+}
+
+/*―――――――――――――――――――――
+    レスポンシブ
+  ―――――――――――――――――――――*/
+/* sm以上でナビとボタン群を表示 */
+@media (min-width: 640px) {
     .site-header__nav {
-        gap: 1rem;
-        margin-left: 1rem;
+        display: flex;
     }
-    .site-header__btn {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.875rem;
+
+    .site-header__btn-group {
+        display: flex;
+    }
+}
+
+/* ハンバーガーボタン */
+.site-header__hamburger {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--ym-text);
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+/* ドロワー本体（モバイル用メニュー） */
+.site-header__mobile-menu {
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    background-color: var(--ym-bg);
+    border-top: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 90;
+}
+
+/* ドロワー内のリンク */
+.site-header__mobile-menu .site-header__nav-link {
+    padding-left: var(--ym-gap);
+    padding-right: var(--ym-gap);
+    border-bottom: 1px solid #eee;
+}
+
+.site-header__mobile-menu .site-header__nav-link:last-child {
+    border-bottom: none;
+}
+
+/* デスクトップ用は隠す */
+@media (min-width: 640px) {
+
+    .site-header__hamburger,
+    .site-header__mobile-menu {
+        display: none;
     }
 }

@@ -34,9 +34,6 @@ Route::get('/about', function () {
     return view('about'); // about.blade.php ビューを返す
 })->name('about'); // 任意の名前をつけておく（ここでは 'about'）
 
-// 詳細ページのルート
-Route::get('/yama-meshi/{post}', [YamaMeshiController::class, 'show'])
-    ->name('yama-meshi.show');
 
 
 // 認証が必要なルート
@@ -72,5 +69,9 @@ Route::middleware(['auth'])->group(function () {
     // メッセージ送信
     Route::post('/messages/send', [MessageController::class, 'send'])->name('messages.send');
 });
+
+// 詳細ページのルート
+Route::get('/yama-meshi/{post}', [YamaMeshiController::class, 'show'])
+    ->name('yama-meshi.show');
 
 require __DIR__.'/auth.php';
