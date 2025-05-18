@@ -14,6 +14,7 @@ RUN apt-get update && \
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
-COPY ./php.ini /usr/local/etc/php/php.ini
+# COPY ./php.ini /usr/local/etc/php/php.ini
+COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /data
