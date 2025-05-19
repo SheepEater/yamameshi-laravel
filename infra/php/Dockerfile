@@ -17,4 +17,7 @@ RUN apt-get install -y nodejs
 # COPY ./php.ini /usr/local/etc/php/php.ini
 COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
+EXPOSE 8080
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+
 WORKDIR /data
