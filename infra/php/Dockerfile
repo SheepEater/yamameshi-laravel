@@ -17,7 +17,20 @@ RUN apt-get install -y nodejs
 # COPY ./php.ini /usr/local/etc/php/php.ini
 COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
-EXPOSE 8080
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
-
+# 作業ディレクトリを /data に設定
 WORKDIR /data
+
+# プロジェクトルートのすべてのファイルをイメージ内 /data にコピー
+COPY . /data
+
+# 依存関係のインストール
+RUN composer install --no-dev --optimize-autoloader
+
+# （必要であれば）npm などフロント資産のビルド
+RUN npm ci && npm run build
+
+# Render のデフォルト要求ポートに合わせる
+EXPOSE 8080
+
+# このディレクトリ (/data) で artisan serve を実行
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
