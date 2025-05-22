@@ -65,13 +65,9 @@ RUN composer install \
 # COPY src/composer.json src/composer.lock /data/
 COPY src/composer.json src/composer.lock ./
 
-
-
-
-
-
 # Render のデフォルト要求ポートに合わせる
 EXPOSE 8080
 
 # このディレクトリ (/data) で artisan serve を実行
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
+# CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
