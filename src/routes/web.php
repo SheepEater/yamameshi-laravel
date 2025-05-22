@@ -25,6 +25,7 @@ use App\Models\YamaMeshiPost;
 //     return view('index', compact('posts')); // `index.blade.php` に `$posts` を渡す
 // })->name('home');
 
+Route::get('/health', fn() => response('OK', 200));
 
 
 Route::get('/', [YamaMeshiController::class, 'search'])

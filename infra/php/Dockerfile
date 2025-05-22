@@ -46,6 +46,8 @@ COPY src/tailwind.config.js  ./
 COPY src/resources/js  resources/js
 COPY src/resources/css resources/css
 
+RUN cp .env.example .env
+
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
 
@@ -70,4 +72,4 @@ EXPOSE 8080
 
 # このディレクトリ (/data) で artisan serve を実行
 # CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan serve --host=0.0.0.0 --port 8080
