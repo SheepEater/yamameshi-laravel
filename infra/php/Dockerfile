@@ -46,7 +46,6 @@ COPY src/tailwind.config.js  ./
 COPY src/resources/js  resources/js
 COPY src/resources/css resources/css
 
-RUN cp .env.example .env
 
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
@@ -55,6 +54,10 @@ RUN npm ci && npm run build
 # COPY src/. .
 # アプリ本体を src/ 配下から /data にコピー
 COPY src/. /data
+
+
+RUN cp .env.example .env
+
 
 # デバッグ付きでインストール
 RUN composer install \
