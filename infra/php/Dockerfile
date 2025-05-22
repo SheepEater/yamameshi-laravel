@@ -36,11 +36,13 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 # 作業ディレクトリを /data に設定
 WORKDIR /data
 
-# アプリ本体を src/ 配下から /data にコピー
-COPY src/. /data
+COPY src/package*.json ./  
+# （必要であれば）npm などフロント資産のビルド
+RUN npm ci && npm run build
 
 # composer.json / lock をコピー
 COPY src/composer.json src/composer.lock /data/
+
 # デバッグ付きでインストール
 RUN composer install \
   --no-dev \
@@ -48,8 +50,8 @@ RUN composer install \
   --no-interaction \
   --prefer-dist
 
-# （必要であれば）npm などフロント資産のビルド
-RUN npm ci && npm run build
+# アプリ本体を src/ 配下から /data にコピー
+COPY src/. /data
 
 # Render のデフォルト要求ポートに合わせる
 EXPOSE 8080
