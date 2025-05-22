@@ -33,16 +33,25 @@ RUN apt-get install -y nodejs
 # COPY ./php.ini /usr/local/etc/php/php.ini
 COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
-# 作業ディレクトリを /data に設定
+# 作業ディレクトリを /data に設定ーーーーーーー
 WORKDIR /data
 
-COPY src/package*.json ./  
+# 1) Viteビルドに必要なフロントエンド周りの定義と設定だけ先にコピー
+COPY src/package*.json       ./  
+COPY src/vite.config.js      ./  
+COPY src/postcss.config.js   ./  
+COPY src/tailwind.config.js  ./
+
+# Laravel プロジェクトの中にあるフロント資産をコピー
+COPY src/resources/js  resources/js
+COPY src/resources/css resources/css
+
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
 
 # composer.json / lock をコピー
-COPY src/composer.json src/composer.lock /data/
-
+# COPY src/composer.json src/composer.lock /data/
+COPY src/composer.json src/composer.lock ./
 # デバッグ付きでインストール
 RUN composer install \
   --no-dev \
@@ -50,6 +59,8 @@ RUN composer install \
   --no-interaction \
   --prefer-dist
 
+# 4) 残りのアプリケーションコードをまとめてコピー
+# COPY src/. .
 # アプリ本体を src/ 配下から /data にコピー
 COPY src/. /data
 
