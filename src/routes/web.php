@@ -30,6 +30,11 @@ use App\Models\YamaMeshiPost;
 Route::get('/', [YamaMeshiController::class, 'search'])
     ->name('home');
 
+// test時に追加　なくてもローカルで動いていた
+Route::get('/posts/search', [YamaMeshiController::class, 'search'])
+->name('posts.search');
+    
+
 Route::get('/about', function () {
     return view('about'); // about.blade.php ビューを返す
 })->name('about'); // 任意の名前をつけておく（ここでは 'about'）

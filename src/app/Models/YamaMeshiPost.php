@@ -22,6 +22,7 @@ class YamaMeshiPost extends Model
     ];
 
     protected $casts = [
+        'user_id'       => 'integer',
         'image_paths' => 'array',
         'ingredients'    => 'array',
         'packing_items'  => 'array',
@@ -36,7 +37,7 @@ class YamaMeshiPost extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class, 'post_id');
     }
 
     // この投稿をユーザーがいいね済みか判定するメソッド

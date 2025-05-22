@@ -8,37 +8,49 @@ use App\Models\YamaMeshiPost;
 
 class YamaMeshiController extends Controller
 {
-    public function index()
-    {
-        // 投稿データを取得（ユーザー情報・いいね情報）
-        $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
-            ->withCount('likes')
-            ->orderBy('created_at', 'desc')
-            ->latest()
-            ->get(); // 投稿を取得
+    // public function index()
+    // {
+    //     // 投稿データを取得（ユーザー情報・いいね情報）
+    //     $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
+    //         ->withCount('likes')
+    //         ->orderBy('created_at', 'desc')
+    //         ->latest()
+    //         ->get(); // 投稿を取得
         
-        return view('yama-meshi.index', compact('posts')); // ビューに渡す
-    }
+    //     return view('yama-meshi.index', compact('posts')); // ビューに渡す
+    // }
 
     /**
      * 投稿検索
      */
     public function search(Request $request)
     {
-        $keyword = $request->input('keyword');
+        $query = YamaMeshiPost::with(['user','likes','messages.sender'])
+        ->withCount('likes')
+        ->orderBy('created_at','desc');
 
-        $posts = YamaMeshiPost::with(['user', 'likes', 'messages.sender'])
-            ->withCount('likes')
-            ->when($keyword, function ($q, $kw) {
-                $q->where('title',   'like', "%{$kw}%")
-                  ->orWhere('place', 'like', "%{$kw}%")
-                  ->orWhere('food',  'like', "%{$kw}%")
-                  ->orWhere('content','like', "%{$kw}%");
-            })
-            ->orderBy('created_at', 'desc')
+        // キーワード
+        if ($kw = $request->input('keyword')) {
+            $query->where(fn($q) => 
+                $q->where('title', 'like', "%{$kw}%")
+                ->orWhere('place', 'like', "%{$kw}%")
+                ->orWhere('food', 'like', "%{$kw}%")
+                ->orWhere('content', 'like', "%{$kw}%")
+            );
+        }
+
+        // 日付From
+        if ($from = $request->input('date_from')) {
+            $query->whereDate('date','>=',$from);
+        }
+        // 日付To
+        if ($to = $request->input('date_to')) {
+            $query->whereDate('date','<=',$to);
+        }
+
+        $posts = $query
             ->paginate(10)
-            ->appends(['keyword' => $keyword]);
-
+            ->appends($request->only(['keyword','date_from','date_to']));
         return view('index', compact('posts'));
     }
 

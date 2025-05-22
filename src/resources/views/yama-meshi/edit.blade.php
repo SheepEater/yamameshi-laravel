@@ -4,11 +4,12 @@
 
     <div class="py-6 max-w-4xl mx-auto">
         <div class="bg-white shadow-md rounded-lg p-6 space-y-6">
-            <form method="POST" action="{{ route('yama-meshi.update', $post) }}" enctype="multipart/form-data" x-data="{
-                items: {{ json_encode(old('ingredients', $post->ingredients ?? [])) }},
-                pack:  {{ json_encode(old('packing_items', $post->packing_items ?? [])) }},
-                previewUrl: '{{ !empty($post->image_paths) ? asset('storage/'.$post->image_paths[0]) : '' }}',
-                /* trigger, add, remove はそのまま */ }"
+            <form method="POST" action="{{ route('yama-meshi.update', $post) }}" enctype="multipart/form-data" 
+                x-data="{
+                    items: @json(old('ingredients', $post->ingredients)),
+                    pack:  @json(old('packing_items', $post->packing_items)),
+                    previewUrl: @json(!empty($post->image_paths) ? asset('storage/'.$post->image_paths[0]) : '')
+                }"
             >
                 @csrf
                 @method('PUT')
@@ -36,7 +37,7 @@
                     <input
                         type="date"
                         name="date"
-                        value="{{ old('date', $post->date) }}"
+                        value="{{ old('date', $post->date->format('Y-m-d')) }}"
                         id="date"
                         class="mt-1 p-2 w-full border rounded-md"
                         onfocus="this.showPicker && this.showPicker()"

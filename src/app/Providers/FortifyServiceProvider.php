@@ -28,10 +28,17 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Fortify 側の route 定義を無効化
+        Fortify::ignoreRoutes();
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        // viewバインド追加
+        Fortify::confirmPasswordView(fn() => view('auth.confirm-password'));
+        Fortify::resetPasswordView(fn($request) => view('auth.reset-password', ['request' => $request]));
+        Fortify::requestPasswordResetLinkView(fn() => view('auth.forgot-password'));
 
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());

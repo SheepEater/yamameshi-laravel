@@ -15,11 +15,16 @@ return new class extends Migration
     {
         Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('yama_meshi_post_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')
+                ->constrained('yama_meshi_posts')
+                ->onDelete('cascade');
+    
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->timestamps();
 
-            $table->unique(['user_id', 'yama_meshi_post_id']); // 一意制約（1投稿1いいね）
+            $table->unique(['user_id', 'post_id']); ; // 一意制約（1投稿1いいね）
         });
     }
 
