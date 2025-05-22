@@ -1,0 +1,10 @@
+# render.yaml
+services:
+  - type: web
+    name: yamameshi-laravel
+    env: docker
+    dockerfilePath: Dockerfile
+    # Render が割り当てる環境変数 $PORT を8080として扱う
+    port: 8080
+    # 任意：ヘルスチェック用エンドポイントを /health に替えたい場合
+    healthCheckPath: "/health"
