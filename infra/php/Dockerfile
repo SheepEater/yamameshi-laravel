@@ -20,20 +20,38 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 # 作業ディレクトリを /data に設定
 WORKDIR /data
+COPY src/package*.json       ./  
+COPY src/vite.config.js      ./  
+COPY src/postcss.config.js   ./  
+COPY src/tailwind.config.js  ./
+
+# Laravel プロジェクトの中にあるフロント資産をコピー
+COPY src/resources/js  resources/js
+COPY src/resources/css resources/css
+
+
+# （必要であれば）npm などフロント資産のビルド
+RUN npm ci && npm run build
+
+# 4) 残りのアプリケーションコードをまとめてコピー
+# COPY src/. .
+# アプリ本体を src/ 配下から /data にコピー
+COPY src/. /data
+
+
+RUN cp .env.example .env
+
+
+# デバッグ付きでインストール
+RUN composer install \
+  --no-dev \
+  --optimize-autoloader \
+  --no-interaction \
+  --prefer-dist
+
+# composer.json / lock をコピー
+# COPY src/composer.json src/composer.lock /data/
 COPY src/composer.json src/composer.lock ./
-
-COPY src/. .
-
-COPY src/.env.example .env
-RUN php artisan key:generate --ansi
-
-RUN composer install --no-dev --optimize-autoloader
-
-COPY src/package*.json ./
-RUN npm ci \
-  && npm run build
-
-
 
 # --- SQLite 用ディレクトリとファイル作成 ---
 RUN mkdir -p database \
