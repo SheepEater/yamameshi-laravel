@@ -20,6 +20,13 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 # 作業ディレクトリを /data に設定
 WORKDIR /data
+
+# --- SQLite 用ディレクトリとファイル作成 ---
+RUN mkdir -p /data/database \
+  && touch /data/database/database.sqlite \
+  && chmod -R 0777 /data/database
+# --- SQLite 用ディレクトリとファイル作成 ---
+
 COPY src/composer.json src/composer.lock ./
 RUN composer install --no-dev --optimize-autoloader
 
@@ -31,8 +38,8 @@ COPY src/. .
 RUN npm run build
 
 RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+  && php artisan route:cache \
+  && php artisan view:cache
 
 # ④ ポート公開・起動コマンド
 EXPOSE 8080
