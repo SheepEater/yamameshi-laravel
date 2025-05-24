@@ -21,14 +21,13 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 # 作業ディレクトリを /data に設定
 WORKDIR /data
 COPY src/composer.json src/composer.lock ./
-RUN composer install --no-dev --optimize-autoloader
 
 COPY src/. .
 
 COPY src/.env.example .env
-
 RUN php artisan key:generate --ansi
 
+RUN composer install --no-dev --optimize-autoloader
 
 COPY src/package*.json ./
 RUN npm ci \
