@@ -36,7 +36,7 @@ class YamaMeshiPost extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(Like::class, 'post_id', 'id');
     }
 
     // この投稿をユーザーがいいね済みか判定するメソッド
