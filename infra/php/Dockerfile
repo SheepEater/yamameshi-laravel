@@ -20,15 +20,20 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 # 作業ディレクトリを /data に設定
 WORKDIR /data
+COPY src/composer.json src/composer.lock ./
+RUN composer install --no-dev --optimize-autoloader
+
+COPY src/package*.json ./
+RUN npm ci
 
 # プロジェクトルートのすべてのファイルをイメージ内 /data にコピー
 COPY src/. .
+RUN npm run build
 
-RUN composer install --no-dev --optimize-autoloader
-
-RUN npm ci && npm run build
-
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
 # ④ ポート公開・起動コマンド
 EXPOSE 8080
-CMD ["php","artisan","serve","--host=0.0.0.0","--port=8080"]
+CMD php artisan serve --host=0.0.0.0 --port ${PORT:-8080}
