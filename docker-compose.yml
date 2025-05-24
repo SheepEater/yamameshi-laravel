@@ -12,7 +12,9 @@ services:
       - "5174:5174"
 
   app:
-    build: ./infra/php
+    build:
+      context: .
+      dockerfile: infra/php/Dockerfile
     volumes:
       - ./src:/data
       - data_node_modules:/data/node_modules #追記　vite問題
