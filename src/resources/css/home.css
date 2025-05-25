@@ -25,7 +25,7 @@ body {
     width: 100%;
     height: 0rem;        /* h-96 なら 24rem (=384px) */
     padding-top: 40%;
-    background-image: url('../images/main-image.png');
+    background-image: url('/images/main-image-public.png');
     background-position: center;
     background-size: cover; /* contain でも可ですが、通常は cover を使うことが多いです */
     background-repeat: no-repeat;
