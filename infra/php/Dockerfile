@@ -61,6 +61,7 @@ RUN mkdir -p database \
 
 # RUN php artisan config:cache \
 #   && php artisan view:cache
+RUN php artisan storage:link
 
 # ④ ポート公開・起動コマンド
 EXPOSE 8080
