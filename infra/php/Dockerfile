@@ -60,7 +60,6 @@ RUN mkdir -p database \
 # --- SQLite 用ディレクトリとファイル作成 ---
 
 RUN php artisan config:cache \
-  && php artisan route:cache \
   && php artisan view:cache
 
 # ④ ポート公開・起動コマンド
