@@ -39,7 +39,7 @@ RUN npm ci && npm run build
 COPY src/. /data
 
 
-RUN cp .env.example .env
+# RUN cp .env.example .env
 
 
 # デバッグ付きでインストール
@@ -59,8 +59,8 @@ RUN mkdir -p database \
   && chmod -R 0777 database
 # --- SQLite 用ディレクトリとファイル作成 ---
 
-RUN php artisan config:cache \
-  && php artisan view:cache
+# RUN php artisan config:cache \
+#   && php artisan view:cache
 
 # ④ ポート公開・起動コマンド
 EXPOSE 8080
