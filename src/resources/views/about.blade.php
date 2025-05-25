@@ -10,8 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/home.css', 'resources/css/components/post-card.css'
-    ,'resources/css/components/header.css'])
+    @vite('resources/js/app.js')
 </head>
 <body class="font-sans bg-gray-100">
     <x-header />
