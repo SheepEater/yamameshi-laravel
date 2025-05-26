@@ -5,8 +5,10 @@ module.exports = {
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-        './resources/js/**/*.js',
+        // './resources/views/**/*.blade.php',
+        './src/resources/views/**/*.blade.php',
+        // './resources/js/**/*.js',
+        './src/resources/js/**/*.js',
     ],
 
     safelist: [
