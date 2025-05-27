@@ -16,7 +16,7 @@ services:
       context: .
       dockerfile: infra/php/Dockerfile
     volumes:
-      - ./src:/data
+      # - ./src:/data
       - data_node_modules:/data/node_modules #追記　vite問題
     working_dir: /data
     command: php-fpm
