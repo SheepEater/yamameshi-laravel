@@ -20,11 +20,10 @@ COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 # 作業ディレクトリを /data に設定
 WORKDIR /data
-COPY      tailwind.config.js postcss.config.js vite.config.js  /data/
-# COPY src/package*.json       ./  
-# COPY src/vite.config.js      ./  
-# COPY src/postcss.config.js   ./  
-# COPY src/tailwind.config.js  ./
+COPY src/package*.json       ./  
+COPY src/vite.config.js      ./  
+COPY src/postcss.config.js   ./  
+COPY src/tailwind.config.js  ./
 
 # Laravel プロジェクトの中にあるフロント資産をコピー
 COPY src/resources/js  resources/js
