@@ -3,7 +3,6 @@ FROM php:8.2-fpm-buster
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
   COMPOSER_HOME=/composer
 
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -29,14 +28,18 @@ COPY src/tailwind.config.js  ./
 COPY src/resources/js  resources/js
 COPY src/resources/css resources/css
 
+COPY src/. /data
 
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
 
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+COPY src/composer.json src/composer.lock ./
+
+
 # 4) 残りのアプリケーションコードをまとめてコピー
 # COPY src/. .
 # アプリ本体を src/ 配下から /data にコピー
-COPY src/. /data
 
 
 # RUN cp .env.example .env
@@ -51,7 +54,6 @@ RUN composer install \
 
 # composer.json / lock をコピー
 # COPY src/composer.json src/composer.lock /data/
-COPY src/composer.json src/composer.lock ./
 
 # --- SQLite 用ディレクトリとファイル作成 ---
 RUN mkdir -p database \
