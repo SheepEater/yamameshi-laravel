@@ -16,20 +16,31 @@ RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
   && apt-get install -y nodejs
 
 # COPY ./php.ini /usr/local/etc/php/php.ini
-# COPY infra/php/php.ini /usr/local/etc/php/php.ini
+COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
 # 作業ディレクトリを /data に設定
 WORKDIR /data
-
 COPY src/package*.json       ./  
 COPY src/vite.config.js      ./  
 COPY src/postcss.config.js   ./  
 COPY src/tailwind.config.js  ./
 
+# Laravel プロジェクトの中にあるフロント資産をコピー
+COPY src/resources/js  resources/js
+COPY src/resources/css resources/css
+
+
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
 
-COPY src/composer.json src/composer.lock ./
+# 4) 残りのアプリケーションコードをまとめてコピー
+# COPY src/. .
+# アプリ本体を src/ 配下から /data にコピー
+COPY src/. /data
+
+
+# RUN cp .env.example .env
+
 
 # デバッグ付きでインストール
 RUN composer install \
@@ -38,11 +49,9 @@ RUN composer install \
   --no-interaction \
   --prefer-dist
 
-COPY src/. /data
-
-RUN cp .env.example .env \
-  && php artisan key:generate --ansi \
-  && php artisan storage:link
+# composer.json / lock をコピー
+# COPY src/composer.json src/composer.lock /data/
+COPY src/composer.json src/composer.lock ./
 
 # --- SQLite 用ディレクトリとファイル作成 ---
 RUN mkdir -p database \
@@ -50,16 +59,12 @@ RUN mkdir -p database \
   && chmod -R 0777 database
 # --- SQLite 用ディレクトリとファイル作成 ---
 
-
-# Laravel プロジェクトの中にあるフロント資産をコピー
-# COPY src/resources/js  resources/js
-# COPY src/resources/css resources/css
-
-
+# RUN php artisan config:cache \
+#   && php artisan view:cache
+RUN php artisan storage:link
 
 # ④ ポート公開・起動コマンド
 EXPOSE 8080
 # CMD php artisan serve --host=0.0.0.0 --port ${PORT:-8080}
 
 CMD ["sh","-c","php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
-
