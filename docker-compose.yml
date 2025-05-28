@@ -15,18 +15,18 @@ services:
     build:
       context: .
       dockerfile: infra/php/Dockerfile
-    volumes:
-      # - ./src:/data
-      - data_node_modules:/data/node_modules #追記　vite問題
+    # volumes:　＃本番用のためコメントアウト
+      # - ./src:/data　＃本番用のためコメントアウト
+      # - data_node_modules:/data/node_modules #追記　vite問題　＃本番用のためコメントアウト
     working_dir: /data
     command: php-fpm
   web:
     image: nginx:1.20-alpine
     ports:
       - 8080:80
-    volumes:
-      - ./src:/data
-      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    # volumes:　＃本番用のためコメントアウト
+    #   - ./src:/data　＃本番用のためコメントアウト
+    #   - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf　＃本番用のためコメントアウト
     working_dir: /data
   db:
     build: ./infra/mysql
