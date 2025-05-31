@@ -145,6 +145,9 @@
         "wrap-ansi-cjs": "^7.0.0",
         "yaml": "^2.7.0"
     },
+    "overrides": {
+        "string-width-cjs": "4.2.2"
+      },
     "keywords": [],
     "author": "",
     "license": "ISC"
