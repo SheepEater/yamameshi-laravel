@@ -33,7 +33,7 @@ COPY src/. /data
 # （必要であれば）npm などフロント資産のビルド
 RUN npm ci && npm run build
 
-COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 COPY src/composer.json src/composer.lock ./
 
 
