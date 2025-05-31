@@ -1,62 +1,68 @@
 ############################################
-# 1) “assets” ステージ：Node.js＋ViteでCSS/JSをビルドする
+# 1) “assets” ステージ：Node.js + Vite/Tailwind のビルド
 ############################################
 FROM node:18 AS assets
 
-# 作業ディレクトリを /app に設定
 WORKDIR /app
 
-# 1-1) package.json / package-lock.json をコピーして、依存関係をインストール
-COPY src/package.json src/package-lock.json ./
-# (もし存在するなら vite/postcss/tailwind の設定ファイルも同階層にコピー)
-COPY src/vite.config.js      ./
-COPY src/postcss.config.js   ./
+# 1.1) package.json と package-lock.json を先にコピー
+COPY src/package.json        ./ 
+COPY src/package-lock.json   ./
+
+# 1.2) Vite/Tailwind/PostCSS の設定ファイルをコピー
+COPY src/vite.config.js      ./  
+COPY src/postcss.config.js   ./  
 COPY src/tailwind.config.js  ./
 
-# 1-2) Laravel のリソースディレクトリと public ディレクトリをコピー
-#      → Vite は default で `public/build` に出力するため、public フォルダが先にある必要がある
+# 1.3) Laravel 側のリソースと public フォルダをコピー
+#      → こうしておくと、Vite のビルド先 public/build の親フォルダ public が存在する状態になる
 COPY src/resources        resources
 COPY src/public           public
 
-# 1-3) 依存関係を lock-file に合わせてインストールし、ビルド
-RUN npm ci 
+# 1.4) Node モジュールをインストールしてビルド
+#      ロックファイルがずれている場合に `npm ci` だとエラーになってしまうため、ここではあえて `npm install` に置き換え
+RUN npm install
 RUN npm run build
 
-# ここまでで、 `/app/public/build` にビルド済みの CSS/JS (Tailwind + Vite 出力) が生成されている
+# これで /app/public/build に
+#   - assets/app-*.css/js  
+#   - assets/home-*.css  
+#   - assets/post-card-*.css  
+#   - … などが生成される
 
 ############################################
-# 2) “app” ステージ：PHP + Composer + Laravel + SQLite を準備する
+# 2) “app” ステージ：PHP + Composer + Laravel + SQLite
 ############################################
 FROM php:8.2-fpm-buster
 
 ENV COMPOSER_ALLOW_SUPERUSER=1 \
     COMPOSER_HOME=/composer
 
-# 2-1) OSパッケージのインストール & PHP拡張モジュールのビルド
+# 2.1) OSパッケージ & PHP 拡張 のインストール
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
-    git \
-    unzip \
-    libzip-dev \
-    libicu-dev \
-    libonig-dev \
-    procps \
-    libpng-dev \
-    nodejs \
+      git \
+      unzip \
+      libzip-dev \
+      libicu-dev \
+      libonig-dev \
+      procps \
+      libpng-dev \
+      nodejs \
  && docker-php-ext-install intl pdo_mysql zip bcmath \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-# 2-2) PHP 設定ファイルをコピー（必要に応じて調整）
+# 2.2) PHP 設定ファイルをコピー（必要に応じて修正）
 COPY infra/php/php.ini /usr/local/etc/php/php.ini
 
-# 作業ディレクトリを /data に設定
+# 2.3) 作業ディレクトリを /data に
 WORKDIR /data
 
-# 2-3) Composer バイナリをコピー
+# 2.4) Composer バイナリをコピー
 COPY --from=composer:2.8 /usr/bin/composer /usr/bin/composer
 
-# 2-4) composer.json と composer.lock を先にコピー → PHP の依存をインストール
+# 2.5) composer.json と composer.lock を先にコピー → PHP の依存をインストール
 COPY src/composer.json src/composer.lock ./
 RUN composer install \
     --no-dev \
@@ -64,21 +70,21 @@ RUN composer install \
     --no-interaction \
     --prefer-dist
 
-# 2-5) “assets” ステージ でビルドされた public/build をこちらにコピー
-#      → これにより、Tailwind/Vite で生成された CSS/JS が /data/public/build に配置される
+# 2.6) “assets” ステージ でビルドした public/build をコピー
+#      → ここで /data/public/build にビルド済みの CSS/JS が置かれる
 COPY --from=assets /app/public/build public/build
 
-# 2-6) Laravel 本体およびその他のソースコードをコピー（resources/js, resources/css は使われないため丸ごとコピーOK）
+# 2.7) Laravel 本体およびその他のソースコードをコピー
 COPY src/. /data
 
-# 2-7) SQLite 用ディレクトリとファイルを作成
+# 2.8) SQLite 用ディレクトリとデータベースファイル作成
 RUN mkdir -p database \
  && touch database/database.sqlite \
  && chmod -R 0777 database
 
-# 2-8) ストレージへのシンボリックリンク作成
+# 2.9) ストレージへのシンボリックリンク作成
 RUN php artisan storage:link
 
-# 2-9) 必要であればマイグレーションを実行してからサーバー起動
+# 2.10) 必要であればマイグレーションを実行してからサーバー起動
 EXPOSE 8080
 CMD ["sh", "-c", "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]
