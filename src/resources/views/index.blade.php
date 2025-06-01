@@ -13,7 +13,7 @@
     <div class="top-container">
         <form method="GET" action="{{ route('home') }}" class="search-form mb-6">
             {{-- キーワード --}}
-            <div class="col-span-1 sm:col-span-3 lg:col-span-2">
+            <div>
                 <input
                 type="text"
                 name="keyword"
@@ -65,11 +65,11 @@
 
         @if(request('keyword'))
             <p class="mb-4 text-gray-600">
-                「<strong>{{ request('keyword') }}</strong>」の検索結果：{{ $posts->total() }}件
+                <strong>{{ request('keyword') }}</strong>」の検索結果：{{ $posts->total() }}件
             </p>
         @endif
         
-        <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
+        <p>ヤマで食べたご飯をシェアしよう！</p>
         
         <!-- 投稿一覧 -->
         <div class="w-full max-w-4xl post-list-wrapper">
