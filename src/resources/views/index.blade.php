@@ -13,7 +13,7 @@
     <div class="top-container">
         <form method="GET" action="{{ route('home') }}" class="search-form mb-6">
             {{-- キーワード --}}
-            <div>
+            <div class="col-span-1 sm:col-span-3 lg:col-span-2">
                 <input
                 type="text"
                 name="keyword"
@@ -69,7 +69,7 @@
             </p>
         @endif
         
-        <p>ヤマで食べたご飯をシェアしよう！</p>
+        <p class="text-lg text-white mt-2">ヤマで食べたご飯をシェアしよう！</p>
         
         <!-- 投稿一覧 -->
         <div class="w-full max-w-4xl post-list-wrapper">
