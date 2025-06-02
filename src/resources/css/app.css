@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 [x-cloak] { display: none !important; }
-
+@import "./home.css";
+@import "./components/post-card.css";
+@import "./components/header.css";
+@import "./components/search.css";
 /* body {
     color: #00244A;
 } */
