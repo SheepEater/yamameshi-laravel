@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ヤマメシ - 登山×料理</title>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    @vite('resources/js/app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body x-data="{ showTop: false }" @scroll.window="showTop = window.pageYOffset > 200" class="body">
     <!-- ヘッダー -->
