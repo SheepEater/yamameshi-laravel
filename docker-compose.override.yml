@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  vite:
+    volumes:
+      - ./src:/data
+      - data_node_modules:/data/node_modules
+
+  app:
+    # ↓ ローカル開発時だけ src をマウント
+    volumes:
+      - ./src:/data
+      - data_node_modules:/data/node_modules
+
+  web:
+    volumes:
+      - ./src:/data
+      - ./infra/nginx/default.conf:/etc/nginx/conf.d/default.conf
+
