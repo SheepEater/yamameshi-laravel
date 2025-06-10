@@ -22,7 +22,7 @@
             <section class="text-center mb-12">
                 <img src="{{ asset('images/yama-about-main.png') }}" alt="山の画像" class="w-full h-64 object-cover rounded-lg shadow-md mb-6">
                 <h2 class="text-3xl font-bold text-gray-800">ヤマメシとは？</h2>
-                <p class="text-xl text-gray-600 mt-4">アウトドアでの食事やレシピを共有しよう！</p>
+                <p class="text-xl text-gray-600 mt-4">アウトドアでの食事やレシピを共有＆記録しよう！</p>
             </section>
 
             <!-- 目的セクション -->
@@ -53,7 +53,7 @@
                     </div>
                     <div>
                         <h3 class="text-xl font-semibold">思い出を記録する</h3>
-                        <p class="text-gray-600">山での食事の写真とともに思い出をシェア。</p>
+                        <p class="text-gray-600">山での食事の写真とともに思い出を記録。</p>
                     </div>
                 </div>
             </section>

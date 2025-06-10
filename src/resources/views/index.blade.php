@@ -97,5 +97,6 @@
     >
         ↑
     </button>
+    <x-footer />
 </body>
 </html>

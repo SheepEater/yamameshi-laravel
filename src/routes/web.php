@@ -74,4 +74,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/yama-meshi/{post}', [YamaMeshiController::class, 'show'])
     ->name('yama-meshi.show');
 
+Route::view('/terms',   'legal.terms')->name('terms');
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+Route::view('/contact', 'contact.form')->name('contact');
+
 require __DIR__.'/auth.php';
