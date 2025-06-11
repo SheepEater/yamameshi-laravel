@@ -18,6 +18,8 @@ body {
     font-weight: bold;
     color: white;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    text-align: center;                 /* 追加 */
+    margin-bottom: var(--ym-gap);       /* 追加 */
 }
 
 .top-container {

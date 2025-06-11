@@ -4,8 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        <meta name="description" content="アウトドアでの食事やレシピ共有サービス「ヤマメシ」">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'ヤマメシ') }} - 登山×料理</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

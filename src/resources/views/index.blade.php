@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ヤマメシ - 登山×料理</title>
+    <meta name="description" content="アウトドアでの食事やレシピ共有サービス「ヤマメシ」">
+    <title>{{ config('app.name', 'ヤマメシ') }} - 登山×料理</title>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -54,9 +55,11 @@
 
     </div>
     
-
     <!-- メインコンテンツ -->
     <main class="flex flex-col items-center justify-center min-h-screen pt-20">
+        <!-- ページタイトル -->
+        <h1 class="page-title">ヤマメシ</h1>
+
         @if(session('success'))
             <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
                 {{ session('success') }}

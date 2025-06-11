@@ -64,10 +64,6 @@
                 <p>本ポリシーは、法令改正やサービス向上のため随時変更されることがあります。変更後は本ページにて通知し、掲載時点で効力を生じます。</p>
             </section>
 
-            <section>
-                <h2 class="text-xl font-semibold mb-2">第9条（お問い合わせ先）</h2>
-                <p>本ポリシーに関するお問い合わせは、<a href="{{ route('contact') }}" class="text-blue-600 hover:underline">お問い合わせフォーム</a>からご連絡ください。</p>
-            </section>
         </div>
     </main>
 

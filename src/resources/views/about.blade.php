@@ -66,6 +66,8 @@
             <p>&copy; 2025 Yama-Meshi All Rights Reserved.</p>
         </div>
     </footer>
+    
+    <x-footer />
 
 </body>
 </html>
