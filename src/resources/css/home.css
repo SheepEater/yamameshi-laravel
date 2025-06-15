@@ -37,17 +37,17 @@ body {
 /* モバイル(<640px)だけの設定 */
 @media (max-width: 639px) {
     .top-container {
-      background-image: none;   /* 背景を消す */
-      padding-top: 0;           /* アスペクト比無効化 */
-      height: 200px;            /* 好きな高さを指定 */
+        background-image: none;   /* 背景を消す */
+        padding-top: 0;           /* アスペクト比無効化 */
+        height: 200px;            /* 好きな高さを指定 */
     }
     .top-container .search-form {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 90%;               /* 横幅は好みで */
-      max-width: 360px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;               /* 横幅は好みで */
+        max-width: 360px;
     }
 }
 
