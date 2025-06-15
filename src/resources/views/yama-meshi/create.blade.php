@@ -10,7 +10,7 @@
                 showDate: false,
                 items: {{ json_encode(old('ingredients', $post->ingredients ?? [])) }},
                 pack:  {{ json_encode(old('packing_items', $post->packing_items ?? [])) }} }"
-            >
+                @keydown.enter="$event.target.tagName !== 'TEXTAREA' && $event.preventDefault()">
                 @csrf
                 @method(isset($post) ? 'PUT' : 'POST')
                 <!-- タイトル -->
@@ -21,11 +21,10 @@
 
                 <!-- 行った場所 -->
                 <div class="mb-4">
-                    <button 
+                    <button
                         type="button"
                         @click="showPlace = !showPlace"
-                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded"
-                    >
+                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded">
                         <span>行った場所</span>
                         <span x-text="showPlace ? '−' : '+'"></span>
                     </button>
@@ -36,18 +35,16 @@
                             value="{{ old('place', $post->place ?? '') }}"
                             maxlength="30"
                             class="w-full border rounded p-2"
-                            placeholder="例：富士山 八合目"
-                        >
+                            placeholder="例：富士山 八合目">
                     </div>
                 </div>
 
                 <!-- 食べたもの -->
                 <div class="mb-4">
-                    <button 
+                    <button
                         type="button"
                         @click="showFood = !showFood"
-                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded"
-                    >
+                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded">
                         <span>食べたもの</span>
                         <span x-text="showFood ? '−' : '+'"></span>
                     </button>
@@ -58,18 +55,16 @@
                             value="{{ old('food', $post->food ?? '') }}"
                             maxlength="30"
                             class="w-full border rounded p-2"
-                            placeholder="例：山ごはんカレー"
-                        >
+                            placeholder="例：山ごはんカレー">
                     </div>
                 </div>
 
                 <!-- 日付（カレンダー＋直接入力） -->
                 <div class="mb-4">
-                    <button 
+                    <button
                         type="button"
                         @click="showDate = !showDate"
-                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded"
-                    >
+                        class="flex items-center justify-between w-full bg-gray-100 p-2 rounded">
                         <span>日付</span>
                         <span x-text="showDate ? '−' : '+'"></span>
                     </button>
@@ -79,8 +74,7 @@
                             name="date"
                             value="{{ old('date') }}"
                             class="w-full border rounded p-2"
-                            onfocus="this.showPicker && this.showPicker()"
-                        >
+                            onfocus="this.showPicker && this.showPicker()">
                     </div>
                 </div>
 
@@ -95,6 +89,14 @@
                         add(event) {
                         const file = event.target.files[0];
                         if (!file) return;
+                        const maxSize = 5 * 1024 * 1024; // 5MB
+                        if (file.size > maxSize) {
+                            this.error = '画像サイズが大きすぎます。5MB以内のファイルを選択してください。';
+                            this.$refs.file.value = null;
+                            this.previewUrl = '';
+                            return;
+                        }
+                        this.error = '';
                         this.previewUrl = URL.createObjectURL(file);
                         },
                         remove() {
@@ -102,33 +104,32 @@
                         this.$refs.file.value = null;
                         }
                     }"
-                    class="mb-6 relative"
-                    >
+                    class="mb-6 relative">
                     <label class="block text-sm font-medium text-gray-700 mb-2">画像をアップロード</label>
 
                     <!-- プレビュー or ＋アイコン -->
                     <div
                         @click="trigger()"
-                        class="cursor-pointer w-32 h-32 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden relative"
-                    >
+                        class="cursor-pointer w-32 h-32 border border-gray-300 rounded-md flex items-center justify-center overflow-hidden relative">
                         <template x-if="previewUrl">
-                        <img
-                            :src="previewUrl"
-                            class="w-full h-full object-cover"
-                            alt="プレビュー画像"
-                        />
+                            <img
+                                :src="previewUrl"
+                                class="w-full h-full object-cover"
+                                alt="プレビュー画像" />
                         </template>
                         <template x-if="!previewUrl">
-                        <span class="text-3xl text-gray-400">＋</span>
+                            <span class="text-3xl text-gray-400">＋</span>
                         </template>
 
                         <!-- キャンセルボタン -->
                         <button
-                        x-show="previewUrl"
-                        @click.stop="remove()"
-                        class="absolute top-1 right-1 bg-white bg-opacity-75 rounded-full p-1 text-red-600 hover:bg-opacity-100"
-                        >&times;</button>
+                            x-show="previewUrl"
+                            @click.stop="remove()"
+                            class="absolute top-1 right-1 bg-white bg-opacity-75 rounded-full p-1 text-red-600 hover:bg-opacity-100">&times;</button>
                     </div>
+
+                    <!-- エラーメッセージ -->
+                    <p x-show="error" x-text="error" class="text-red-500 text-sm mt-2"></p>
 
                     <!-- 隠しファイル入力 -->
                     <input
@@ -137,31 +138,28 @@
                         name="images[]"
                         accept="image/*"
                         class="hidden"
-                        @change="add($event)"
-                    />
+                        @change="add($event)" />
                 </div>
 
                 {{-- 材料リスト --}}
                 <div class="mb-6">
                     <label class="block font-medium mb-2">材料リスト（任意）</label>
                     <template x-for="(item, idx) in items" :key="idx">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <input
-                        type="text"
-                        :name="`ingredients[${idx}]`"
-                        x-model="items[idx]"
-                        class="flex-1 border rounded p-2"
-                        placeholder="例：米 100g"
-                        >
-                        <button type="button" @click="items.splice(idx,1)" class="text-red-500">削除</button>
-                    </div>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <input
+                                type="text"
+                                :name="`ingredients[${idx}]`"
+                                x-model="items[idx]"
+                                class="flex-1 border rounded p-2"
+                                placeholder="例：米 100g">
+                            <button type="button" @click="items.splice(idx,1)" class="text-red-500">削除</button>
+                        </div>
                     </template>
                     <button
-                    type="button"
-                    @click="items.push('')"
-                    class="text-sm text-green-600 hover:underline"
-                    >
-                    ＋ 材料を追加
+                        type="button"
+                        @click="items.push('')"
+                        class="text-sm text-green-600 hover:underline">
+                        ＋ 材料を追加
                     </button>
                 </div>
 
@@ -169,23 +167,21 @@
                 <div class="mb-6">
                     <label class="block font-medium mb-2">パッキングリスト（任意）</label>
                     <template x-for="(it, i) in pack" :key="i">
-                    <div class="flex items-center space-x-2 mb-2">
-                        <input
-                        type="text"
-                        :name="`packing_items[${i}]`"
-                        x-model="pack[i]"
-                        class="flex-1 border rounded p-2"
-                        placeholder="例：バーナー"
-                        >
-                        <button type="button" @click="pack.splice(i,1)" class="text-red-500">削除</button>
-                    </div>
+                        <div class="flex items-center space-x-2 mb-2">
+                            <input
+                                type="text"
+                                :name="`packing_items[${i}]`"
+                                x-model="pack[i]"
+                                class="flex-1 border rounded p-2"
+                                placeholder="例：バーナー">
+                            <button type="button" @click="pack.splice(i,1)" class="text-red-500">削除</button>
+                        </div>
                     </template>
                     <button
-                    type="button"
-                    @click="pack.push('')"
-                    class="text-sm text-green-600 hover:underline"
-                    >
-                    ＋ アイテムを追加
+                        type="button"
+                        @click="pack.push('')"
+                        class="text-sm text-green-600 hover:underline">
+                        ＋ アイテムを追加
                     </button>
                 </div>
 
@@ -200,7 +196,7 @@
                 <div class="flex justify-between items-center pt-4">
                     <!-- 戻るボタン -->
                     <a href="{{ url()->previous() }}"
-                       class="inline-block bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg">
+                        class="inline-block bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-lg">
                         戻る
                     </a>
 

@@ -64,7 +64,7 @@ class YamaMeshiController extends Controller
             'packing_items'   => 'nullable|array',
             'packing_items.*' => 'nullable|string|max:100',
             'images'  => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 複数画像対応
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:5120', // 複数画像対応
         ]);
 
         if ($request->hasFile('images')) {

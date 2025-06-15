@@ -25,7 +25,7 @@
         >{{ Str::limit($post->title, 30) }}</a>
     </h3>
     <p class="text-xs text-gray-500 mb-1">
-        {{ $post->date  }}
+        {{ $post->date?->format('Y-m-d') }}
         <!-- {{ $post->date ?? '未入力' }} -->
     </p>
 

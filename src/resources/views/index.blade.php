@@ -11,6 +11,12 @@
 <body x-data="{ showTop: false }" @scroll.window="showTop = window.pageYOffset > 200" class="body">
     <!-- ヘッダー -->
     <x-header />
+
+    {{-- スマホ（640px以下）のときだけ表示 --}}
+    <h1 class="page-title block sm:hidden text-center mt-6 text-2xl font-bold">
+        ヤマメシ
+    </h1>
+
     <div class="top-container">
         <form method="GET" action="{{ route('home') }}" class="search-form mb-6">
             {{-- キーワード --}}
@@ -58,8 +64,9 @@
     <!-- メインコンテンツ -->
     <main class="flex flex-col items-center justify-center min-h-screen pt-20">
         <!-- ページタイトル -->
-        <h1 class="page-title">ヤマメシ</h1>
-
+        <div class="hidden sm:block">
+            <h1 class="page-title">ヤマメシ</h1>
+        </div>
         @if(session('success'))
             <div class="bg-green-100 text-green-700 p-4 rounded mb-4">
                 {{ session('success') }}
