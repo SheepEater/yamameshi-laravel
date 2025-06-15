@@ -9,7 +9,21 @@
         <title>{{ config('app.name', 'ヤマメシ') }} - 登山×料理</title>
 
         <!-- Icon -->
-        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+        <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon" />
+
+        <link rel="icon" type="image/png" sizes="96x96"  href="{{ asset('images/icons/favicon-96x96.png') }}" />
+        <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/icons/web-app-manifest-192x192.png') }}" />
+        <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('images/icons/web-app-manifest-512x512.png') }}" />
+
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/icons/apple-touch-icon.png') }}" />
+
+        <link rel="manifest" href="{{ asset('images/icons/site.webmanifest') }}" />
+
+        <!-- タイルカラー（Windows）やテーマカラー -->
+        <meta name="msapplication-TileColor" content="#00244A" />
+        <meta name="msapplication-TileImage" content="{{ asset('images/icons/favicon-96x96.png') }}" />
+        <meta name="theme-color" content="#00244A" />
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
